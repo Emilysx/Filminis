@@ -1,0 +1,220 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, #369DA1 0%, #21618D 100%);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.navbarContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbarLogo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.navbarLogo:hover {
+  transform: scale(1.05);
+}
+
+.navbarLogoImg {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.navbarTitulo {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: white;
+  letter-spacing: 0.05em;
+}
+
+.navbarAcoes {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbarBusca {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.navbarBusca.aberta {
+  background: white;
+  padding-right: 1rem;
+}
+
+.navbarBuscaInput {
+  width: 0;
+  opacity: 0;
+  border: none;
+  background: none;
+  font-size: 1rem;
+  color: #21618D;
+  transition: all 0.3s ease;
+}
+
+.navbarBusca.aberta .navbarBuscaInput {
+  width: 200px;
+  opacity: 1;
+}
+
+.navbarBuscaInput:focus {
+  outline: none;
+}
+
+.navbarBuscaInput::placeholder {
+  color: #369DA1;
+}
+
+.navbarBotaoIcone {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.navbarBusca.aberta .navbarBotaoIcone {
+  color: #369DA1;
+}
+
+.navbarBotaoIcone:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.navbarBusca.aberta .navbarBotaoIcone:hover {
+  background: rgba(54, 157, 161, 0.1);
+}
+
+.navbarUsuario {
+  position: relative;
+}
+
+.navbarBotaoUsuario {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.navbarBotaoUsuario:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.1);
+}
+
+.navbarMenu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  overflow: hidden;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbarMenuHeader {
+  padding: 1rem;
+  border-bottom: 1px solid #D9ECE3;
+}
+
+.navbarMenuNome {
+  font-weight: 600;
+  color: #21618D;
+  margin-bottom: 0.25rem;
+}
+
+.navbarMenuAdmin {
+  display: inline-block;
+  background: linear-gradient(135deg, #F498AE 0%, #72B488 100%);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.navbarMenuItem {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #17434F;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  text-align: left;
+}
+
+.navbarMenuItem:hover {
+  background: #D9ECE3;
+}
+
+@media (max-width: 768px) {
+  .navbarContainer {
+    padding: 1rem;
+  }
+
+  .navbarLogoImg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .navbarTitulo {
+    font-size: 1.25rem;
+  }
+
+  .navbarBusca.aberta .navbarBuscaInput {
+    width: 150px;
+  }
+
+  .navbarAcoes {
+    gap: 0.5rem;
+  }
+}

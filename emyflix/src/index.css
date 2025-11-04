@@ -1,0 +1,15 @@
+:root {
+  --cor-fundo: #D9ECE3;
+  --cor-primaria: #369DA1;
+  --cor-secundaria: #21618D;
+  --cor-escura: #17434F;
+  --cor-rosa: #F498AE;
+  --cor-verde: #72B488;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--cor-fundo);
+  color: var(--cor-escura);
+}
