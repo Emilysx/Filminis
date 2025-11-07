@@ -1,0 +1,300 @@
+.admin {
+  min-height: 100vh;
+  background-color: #D9ECE3;
+}
+
+.adminContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.adminCarregando {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  background-color: #D9ECE3;
+}
+
+.adminSpinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(54, 157, 161, 0.2);
+  border-top-color: #369DA1;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.adminCarregando p {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #21618D;
+}
+
+.adminBotaoVoltar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  color: #21618D;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.adminBotaoVoltar:hover {
+  transform: translateX(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.adminTitulo {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #21618D;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.adminSecao {
+  background: white;
+  border-radius: 24px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.adminSecaoTitulo {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #21618D;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid #369DA1;
+}
+
+.adminVazio {
+  text-align: center;
+  color: #17434F;
+  font-size: 1.125rem;
+  padding: 2rem;
+  opacity: 0.7;
+}
+
+.adminGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.adminCard {
+  background: #D9ECE3;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.adminCard:hover {
+  transform: translateY(-4px);
+}
+
+.adminCardImagem {
+  width: 100%;
+  aspect-ratio: 2/3;
+  background: linear-gradient(135deg, #369DA1 0%, #21618D 100%);
+}
+
+.adminCardImagem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.adminCardPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adminCardPlaceholder span {
+  font-size: 4rem;
+  font-weight: 800;
+  color: white;
+  text-transform: uppercase;
+}
+
+.adminCardInfo {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.adminCardTitulo {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #21618D;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.adminCardAno {
+  font-size: 0.95rem;
+  color: #17434F;
+  font-weight: 600;
+}
+
+.adminCardUsuario {
+  font-size: 0.875rem;
+  color: #17434F;
+  opacity: 0.8;
+}
+
+.adminCardAcoes {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.adminBotao {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.adminBotaoAprovar {
+  background: #72B488;
+  color: white;
+}
+
+.adminBotaoAprovar:hover:not(:disabled) {
+  background: #5ea574;
+  transform: translateY(-2px);
+}
+
+.adminBotaoRejeitar {
+  background: #F498AE;
+  color: white;
+}
+
+.adminBotaoRejeitar:hover:not(:disabled) {
+  background: #f17a95;
+  transform: translateY(-2px);
+}
+
+.adminBotao:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.adminLista {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.adminSolicitacao {
+  background: #D9ECE3;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.adminSolicitacaoInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.adminSolicitacaoTitulo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #21618D;
+}
+
+.adminSolicitacaoUsuario {
+  font-size: 0.95rem;
+  color: #17434F;
+  opacity: 0.8;
+}
+
+.adminSolicitacaoDetalhes {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #17434F;
+}
+
+.adminSolicitacaoDetalhes p {
+  margin-bottom: 0.25rem;
+}
+
+.adminSolicitacaoAcoes {
+  display: flex;
+  gap: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .adminContainer {
+    padding: 1rem;
+  }
+
+  .adminTitulo {
+    font-size: 2rem;
+  }
+
+  .adminSecao {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .adminSecaoTitulo {
+    font-size: 1.5rem;
+  }
+
+  .adminGrid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+
+  .adminSolicitacao {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .adminSolicitacaoAcoes {
+    width: 100%;
+  }
+
+  .adminBotao {
+    font-size: 0.875rem;
+    padding: 0.625rem;
+  }
+}
