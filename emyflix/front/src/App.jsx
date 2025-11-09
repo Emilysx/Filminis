@@ -1,90 +1,91 @@
-import { useState, useEffect } from 'react';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import Intro from './components/Intro/Intro';
+import { useState } from 'react';
+import { useAuth } from './contexts/AuthContext';
 import Login from './pages/Login/Login';
-import Home from './pages/Home/Home';
-import DetalheFilme from './pages/DetalheFilme/DetalheFilme';
-import FormularioFilme from './pages/FormularioFilme/FormularioFilme';
-import PainelAdmin from './pages/PainelAdmin/PainelAdmin';
+import Cadastro from './pages/Cadastro/Cadastro';
+import Intro from './components/Intro/Intro'; // Do seu código original
+
+function LoadingScreen() {
+  return (
+    <div style={{ 
+      minHeight: '100vh', display: 'flex', 
+      alignItems: 'center', justifyContent: 'center',
+      backgroundColor: '#D9ECE3' // Cor de fundo do seu site
+    }}>
+      <div style={{ textAlign: 'center' }}>
+        <div style={{
+          width: '60px', height: '60px',
+          border: '4px solid rgba(54, 157, 161, 0.2)',
+          borderTopColor: '#369DA1',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite'
+        }} />
+        <p style={{ fontSize: '1.2rem', fontWeight: 600, color: '#21618D', marginTop: '1rem' }}>
+          Carregando EmyFlix...
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// Página Home "Falsa" (só para testar o login)
+function HomePlaceholder({ user }) {
+  const { signOut } = useAuth();
+  return (
+    <div style={{ padding: '2rem' }}>
+      <h1>Olá, {user.nome}! Você está logado.</h1>
+      <p>Seu papel é: <strong>{user.role}</strong></p>
+      <button 
+        onClick={signOut} 
+        style={{ padding: '0.5rem 1rem', background: '#F498AE', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
+      >
+        Sair
+      </button>
+    </div>
+  );
+}
 
 function AppContent() {
   const { user, loading } = useAuth();
-  const [rota, setRota] = useState('intro');
-  const [params, setParams] = useState({});
-
-  const navegar = (novaRota, novosParams) => {
+  const [rota, setRota] = useState('intro'); // Começa na 'intro'
+  const navegar = (novaRota) => {
     setRota(novaRota);
-    if (novosParams) {
-      setParams(novosParams);
-    } else {
-      setParams({});
-    }
   };
 
   const handleIntroComplete = () => {
     if (user) {
-      navegar('home');
+      setRota('home'); // Se já estava logado, vai pra home
     } else {
-      navegar('login');
+      setRota('login'); // Se não, vai pro login
     }
   };
 
-  const handleLoginSuccess = () => {
-    navegar('home');
-  };
-
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-lg font-semibold text-gray-700">Carregando...</p>
-        </div>
-      </div>
-    );
+    return <LoadingScreen />;
   }
-
+  
   if (rota === 'intro') {
     return <Intro onComplete={handleIntroComplete} />;
   }
 
-  if (!user && rota !== 'login') {
-    return <Login onLoginSuccess={handleLoginSuccess} />;
+  if (!user) {
+    if (rota === 'cadastro') {
+      return <Cadastro onNavigate={navegar} />;
+    }
+    // O padrão para usuários não logados é a tela de Login
+    return <Login onNavigate={navegar} />;
   }
-
-  if (rota === 'login') {
-    return <Login onLoginSuccess={handleLoginSuccess} />;
-  }
-
-  if (rota === 'home') {
-    return <Home onNavegar={navegar} />;
-  }
-
-  if (rota === 'filme' && params.id) {
-    return <DetalheFilme filmeId={params.id} onNavegar={navegar} />;
-  }
-
-  if (rota === 'adicionar') {
-    return <FormularioFilme onNavegar={navegar} />;
-  }
-
-  if (rota === 'editar' && params.id) {
-    return <FormularioFilme filmeId={params.id} onNavegar={navegar} />;
-  }
-
-  if (rota === 'admin') {
-    return <PainelAdmin onNavegar={navegar} />;
-  }
-
-  return <Home onNavegar={navegar} />;
+  return <HomePlaceholder user={user} />;
 }
+
 
 function App() {
-  return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
-  );
+  return <AppContent />;
 }
+
+const styleSheet = document.createElement("style");
+styleSheet.type = "text/css";
+styleSheet.innerText = "@keyframes spin { to { transform: rotate(360deg); } }";
+document.head.appendChild(styleSheet);
+
 
 export default App;

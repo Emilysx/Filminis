@@ -1,0 +1,129 @@
+.cadastroContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  font-family: 'Poppins', sans-serif;
+  background-image: url(../../assets/fundo-cadastro.png); 
+  background-size: cover;
+  background-position: center;
+}
+
+.cadastroCard {
+  background: rgba(10, 10, 10, 0.85); 
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 800px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cadastroTitulo {
+  font-size: 2.25rem; 
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.cadastroSubtitulo {
+  font-size: 1rem;
+  color: #ccc;
+  margin-bottom: 2.5rem;
+}
+
+.cadastroForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Duas colunas */
+  gap: 1.5rem 1rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputGroup label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #bbb;
+}
+
+.inputGroup input {
+  padding: 0.875rem 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #555;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  color: #333;
+}
+
+.inputGroup input:focus {
+  outline: none;
+  border-color: #8BC34A; /* Verde do botão */
+  box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.2);
+}
+
+.cadastroBotao {
+  padding: 1rem;
+  background: #8BC34A;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+.cadastroBotao:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 195, 74, 0.3);
+}
+.cadastroBotao:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cadastroAlternar {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+}
+.cadastroAlternar span {
+  font-weight: 600;
+  color: #8BC34A;
+}
+.cadastroAlternar:hover span {
+  text-decoration: underline;
+}
+
+.cadastroErro {
+  padding: 0.875rem;
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  color: #c33;
+  font-size: 0.9rem;
+  text-align: center;
+  grid-column: 1 / -1;
+}
