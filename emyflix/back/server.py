@@ -1,10 +1,9 @@
 # Este é o arquivo é o que liga o back-end.
-
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 import re
 
-# Importa os nossos "Gerentes" (Handlers/Controladores)
+# Importa os "Gerentes" (Handlers/Controladores)
 from handlers import auth_handler
 from handlers import filmes_handler
 from handlers import admin_handler   
@@ -171,7 +170,7 @@ def run(server_class=HTTPServer, handler_class=SimpleAPIHandler, port=8000):
     """ Configura e inicia o servidor HTTP. """
     server_address = ('', port) 
     httpd = server_class(server_address, handler_class)
-    print(f"🎀 - Iniciando API em http://localhost:{port}/ ...")
+    print(f"🎀  - Iniciando API em http://localhost:{port}/ ...")
     try:
         httpd.serve_forever() # Deixa o servidor rodando
     except KeyboardInterrupt:

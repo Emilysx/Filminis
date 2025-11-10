@@ -1,0 +1,235 @@
+.carrossel {
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+.carrosselContainer {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #21618D;
+}
+
+.carrosselImagem {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.carrosselImagem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Animação suave de fade ao trocar de slide */
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.carrosselPlaceholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #369DA1 0%, #21618D 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carrosselPlaceholder span {
+  font-size: 8rem;
+  font-weight: 800;
+  color: white;
+  text-transform: uppercase;
+}
+
+.carrosselGradiente {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 70%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+}
+
+.carrosselInfo {
+  position: absolute;
+  bottom: 3rem;
+  left: 3rem;
+  right: 3rem;
+  z-index: 10;
+  color: white;
+  max-width: 600px;
+}
+
+.carrosselTitulo {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.carrosselAno {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.carrosselCategorias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.carrosselCategoria {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.carrosselSinopse {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  opacity: 0.95;
+  /* Limita a sinopse a 2 linhas */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.carrosselBotao {
+  padding: 1rem 2rem;
+  background: white;
+  color: #21618D;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.125rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.carrosselBotao:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  background: #D9ECE3;
+}
+
+.carrosselControle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: none;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 20;
+}
+
+.carrosselControle:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carrosselControleEsquerda {
+  left: 1.5rem;
+}
+
+.carrosselControleDireita {
+  right: 1.5rem;
+}
+
+.carrosselIndicadores {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.75rem;
+  z-index: 20;
+}
+
+.carrosselIndicador {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.carrosselIndicador.ativo {
+  background: white;
+  width: 32px;
+  border-radius: 6px;
+}
+
+/* Media queries para telas menores */
+@media (max-width: 768px) {
+  .carrosselContainer {
+    height: 400px;
+    border-radius: 16px;
+  }
+  .carrosselInfo {
+    bottom: 2rem;
+    left: 1.5rem;
+    right: 1.5rem;
+  }
+  .carrosselTitulo {
+    font-size: 1.75rem;
+  }
+  .carrosselAno {
+    font-size: 1rem;
+  }
+  .carrosselSinopse {
+    font-size: 0.9rem;
+    -webkit-line-clamp: 2; /* Mantém 2 linhas */
+  }
+  .carrosselBotao {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+  .carrosselControle {
+    width: 48px;
+    height: 48px;
+  }
+  .carrosselControleEsquerda {
+    left: 1rem;
+  }
+  .carrosselControleDireita {
+    right: 1rem;
+  }
+  .carrosselPlaceholder span {
+    font-size: 4rem;
+  }
+}

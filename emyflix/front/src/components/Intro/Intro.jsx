@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './Intro.css';
+import logoEmyflix from '../../assets/logo.png';
 
 function Intro({ onComplete }) {
   const [mostrarTexto, setMostrarTexto] = useState(false);
@@ -16,9 +17,8 @@ function Intro({ onComplete }) {
   return (
     <div className="introContainer">
       <div className="introFundo">
-        {/* Este logo.png precisa estar na pasta 'front/public/' */}
         <img
-          src="/logo.png"
+          src={logoEmyflix}
           alt="Logo EmyFlix"
           className={`introLogo ${mostrarTexto ? 'mostrar' : ''}`}
         />

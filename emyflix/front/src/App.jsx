@@ -2,14 +2,20 @@ import { useState } from 'react';
 import { useAuth } from './contexts/AuthContext';
 import Login from './pages/Login/Login';
 import Cadastro from './pages/Cadastro/Cadastro';
-import Intro from './components/Intro/Intro'; // Do seu código original
+import Intro from './components/Intro/Intro';
+import Home from './pages/Home/Home';
 
+// import DetalheFilme from './pages/DetalheFilme/DetalheFilme';
+// import FormularioFilme from './pages/FormularioFilme/FormularioFilme';
+// import PainelAdmin from './pages/PainelAdmin/PainelAdmin';
+
+// Componente "Loading" 
 function LoadingScreen() {
   return (
     <div style={{ 
       minHeight: '100vh', display: 'flex', 
       alignItems: 'center', justifyContent: 'center',
-      backgroundColor: '#D9ECE3' // Cor de fundo do seu site
+      backgroundColor: '#D9ECE3' 
     }}>
       <div style={{ textAlign: 'center' }}>
         <div style={{
@@ -19,43 +25,29 @@ function LoadingScreen() {
           borderRadius: '50%',
           animation: 'spin 1s linear infinite'
         }} />
-        <p style={{ fontSize: '1.2rem', fontWeight: 600, color: '#21618D', marginTop: '1rem' }}>
-          Carregando EmyFlix...
-        </p>
       </div>
     </div>
   );
 }
 
-// Página Home "Falsa" (só para testar o login)
-function HomePlaceholder({ user }) {
-  const { signOut } = useAuth();
-  return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Olá, {user.nome}! Você está logado.</h1>
-      <p>Seu papel é: <strong>{user.role}</strong></p>
-      <button 
-        onClick={signOut} 
-        style={{ padding: '0.5rem 1rem', background: '#F498AE', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
-      >
-        Sair
-      </button>
-    </div>
-  );
-}
 
 function AppContent() {
   const { user, loading } = useAuth();
-  const [rota, setRota] = useState('intro'); // Começa na 'intro'
-  const navegar = (novaRota) => {
+  
+  // Agora o 'params' para guardar o ID do filme (ex: { id: 5 })
+  const [rota, setRota] = useState('intro');
+  const [params, setParams] = useState({});
+
+  const navegar = (novaRota, novosParams = {}) => {
     setRota(novaRota);
+    setParams(novosParams);
   };
 
   const handleIntroComplete = () => {
     if (user) {
-      setRota('home'); // Se já estava logado, vai pra home
+      setRota('home');
     } else {
-      setRota('login'); // Se não, vai pro login
+      setRota('login');
     }
   };
 
@@ -63,25 +55,42 @@ function AppContent() {
     return <LoadingScreen />;
   }
   
-  if (rota === 'intro') {
-    return <Intro onComplete={handleIntroComplete} />;
-  }
-
   if (!user) {
+    if (rota === 'intro') {
+      return <Intro onComplete={handleIntroComplete} />;
+    }
     if (rota === 'cadastro') {
       return <Cadastro onNavigate={navegar} />;
     }
-    // O padrão para usuários não logados é a tela de Login
     return <Login onNavigate={navegar} />;
   }
-  return <HomePlaceholder user={user} />;
-}
 
+  // 5. FLUXO DE LOGADO (AQUI ESTÁ A MUDANÇA)
+  
+  // (Vamos descomentar isso nos próximos passos)
+  // if (rota === 'filme' && params.id) {
+  //   return <DetalheFilme filmeId={params.id} onNavegar={navegar} />;
+  // }
+  // if (rota === 'adicionar') {
+  //   return <FormularioFilme onNavegar={navegar} />;
+  // }
+  // if (rota === 'editar' && params.id) {
+  //   return <FormularioFilme filmeId={params.id} onNavegar={navegar} />;
+  // }
+  // if (rota === 'admin') {
+  //   return <PainelAdmin onNavegar={navegar} />;
+  // }
+
+  // A rota padrão para um usuário logado é a 'home'
+  // Substituímos o 'HomePlaceholder' pela 'Home' real
+  return <Home onNavegar={navegar} />;
+}
 
 function App() {
   return <AppContent />;
 }
 
+// CSS da animação (pode manter)
 const styleSheet = document.createElement("style");
 styleSheet.type = "text/css";
 styleSheet.innerText = "@keyframes spin { to { transform: rotate(360deg); } }";
