@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode'; // Vamos ter que instalar isso
 
-// 1. Definimos a URL do nosso back-end em Python
+// Definimos a URL do nosso back-end em Python
 const API_URL = 'http://localhost:8000';
 
 const AuthContext = createContext(undefined);
@@ -29,12 +29,12 @@ export function AuthProvider({ children }) {
     setLoading(false); // Termina de carregar
   }, [token]); // Roda de novo se o token mudar
 
-  // Função de Login (ATUALIZADA)
-  const signIn = async (email, password) => {
+  // Função de Login 
+  const signIn = async (email, senha) => {
     const response = await fetch(`${API_URL}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, senha }),
     });
 
     const data = await response.json();
@@ -43,17 +43,17 @@ export function AuthProvider({ children }) {
       throw new Error(data.erro || 'Erro ao fazer login');
     }
 
-    // Sucesso! Salva o "crachá" no localStorage e no estado
+    // Salva o "crachá" no localStorage e no estado
     localStorage.setItem('token', data.token);
     setToken(data.token);
   };
 
-  // Função de Registro (ATUALIZADA)
-  const signUp = async (email, password, nome) => {
+  // Função de Registro
+  const signUp = async (email, senha, nome) => {
     const response = await fetch(`${API_URL}/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, nome, role: 'comum' }),
+      body: JSON.stringify({ email, senha, nome, role: 'comum' }),
     });
 
     const data = await response.json();

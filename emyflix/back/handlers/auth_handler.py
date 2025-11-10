@@ -7,34 +7,28 @@ from utils.auth_seguranca import hash_password, check_password, create_token
 import mysql.connector
 
 def handle_register(handler_instance):
-    # Lida com [POST] /register - Registro de novo usuário.
-    # Lê o JSON enviado pelo React
+    print("\n--- O SERVIDOR LEU A FUNÇÃO 'handle_register' CORRETA ---")
     body = parse_json_body(handler_instance)
     if not body:
         send_error_response(handler_instance, 400, "Corpo da requisição inválido ou vazio.")
         return
 
-    # Pega os dados do corpo JSON
+    # Pega os dados
     nome = body.get('nome')
     email = body.get('email')
     senha = body.get('senha')
-    role_nome = body.get('role', 'comum') # Padrão é 'comum' se não for enviado
-
+    role_nome = body.get('role', 'comum') # Padrão é 'comum'
+    
     if not nome or not email or not senha:
         send_error_response(handler_instance, 400, "Campos 'nome', 'email' e 'senha' são obrigatórios.")
-        return
 
     if role_nome not in ['comum', 'adm']:
         send_error_response(handler_instance, 400, "Role deve ser 'comum' ou 'adm'.")
         return
     
-    # Converte o nome do "papel" para o ID do banco (1 = comum, 2 = adm)
     role_id_para_inserir = 1 if role_nome == 'comum' else 2
-
-    # Criptografa a senha ANTES de salvar
     senha_hashed = hash_password(senha)
 
-    # Conecta ao banco
     conn = get_db_connection()
     if not conn:
         send_error_response(handler_instance, 500, "Erro interno do servidor (DB).")
@@ -44,21 +38,16 @@ def handle_register(handler_instance):
     query = "INSERT INTO usuarios (nome, email, senha, role_id) VALUES (%s, %s, %s, %s)"
     
     try:
-        # Executa a query no banco
         cursor.execute(query, (nome, email, senha_hashed, role_id_para_inserir))
         conn.commit()
-        
-        # Envia a resposta de sucesso
         send_json_response(handler_instance, 201, {"mensagem": "Usuário criado com sucesso."})
 
     except mysql.connector.Error as err:
-        # 1062 é o código de erro do MySQL para "Chave duplicada" (email já existe)
         if err.errno == 1062: 
             send_error_response(handler_instance, 409, "Email já cadastrado.")
         else:
             send_error_response(handler_instance, 500, f"Erro no banco de dados: {err.errno} ({err.sqlstate}): {err.msg}")
     finally:
-        # Fecha a conexão
         if 'cursor' in locals() and cursor:
             cursor.close()
         if 'conn' in locals() and conn and conn.is_connected():
