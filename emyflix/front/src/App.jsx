@@ -4,12 +4,9 @@ import Login from './pages/Login/Login';
 import Cadastro from './pages/Cadastro/Cadastro';
 import Intro from './components/Intro/Intro';
 import Home from './pages/Home/Home';
+import Footer from './components/Footer/Footer'; // <-- 1. IMPORTE O FOOTER
 
-// import DetalheFilme from './pages/DetalheFilme/DetalheFilme';
-// import FormularioFilme from './pages/FormularioFilme/FormularioFilme';
-// import PainelAdmin from './pages/PainelAdmin/PainelAdmin';
-
-// Componente "Loading" 
+// ... (Componente LoadingScreen fica aqui, sem mudanças) ...
 function LoadingScreen() {
   return (
     <div style={{ 
@@ -29,12 +26,10 @@ function LoadingScreen() {
     </div>
   );
 }
-
+// --- Fim do LoadingScreen ---
 
 function AppContent() {
   const { user, loading } = useAuth();
-  
-  // Agora o 'params' para guardar o ID do filme (ex: { id: 5 })
   const [rota, setRota] = useState('intro');
   const [params, setParams] = useState({});
 
@@ -55,6 +50,7 @@ function AppContent() {
     return <LoadingScreen />;
   }
   
+  // --- FLUXO DE NÃO-LOGADO ---
   if (!user) {
     if (rota === 'intro') {
       return <Intro onComplete={handleIntroComplete} />;
@@ -62,32 +58,25 @@ function AppContent() {
     if (rota === 'cadastro') {
       return <Cadastro onNavigate={navegar} />;
     }
+    // O padrão é Login
     return <Login onNavigate={navegar} />;
   }
 
-  // 5. FLUXO DE LOGADO (AQUI ESTÁ A MUDANÇA)
+  // --- FLUXO DE LOGADO ---
+  // (Aqui vamos adicionar as outras páginas depois)
   
-  // (Vamos descomentar isso nos próximos passos)
-  // if (rota === 'filme' && params.id) {
-  //   return <DetalheFilme filmeId={params.id} onNavegar={navegar} />;
-  // }
-  // if (rota === 'adicionar') {
-  //   return <FormularioFilme onNavegar={navegar} />;
-  // }
-  // if (rota === 'editar' && params.id) {
-  //   return <FormularioFilme filmeId={params.id} onNavegar={navegar} />;
-  // }
-  // if (rota === 'admin') {
-  //   return <PainelAdmin onNavegar={navegar} />;
-  // }
-
-  // A rota padrão para um usuário logado é a 'home'
-  // Substituímos o 'HomePlaceholder' pela 'Home' real
+  // A rota padrão é a 'home'
   return <Home onNavegar={navegar} />;
 }
 
 function App() {
-  return <AppContent />;
+  return (
+    // 2. O App agora é um 'Fragmento' que envolve o conteúdo e o footer
+    <>
+      <AppContent />
+      <Footer />
+    </>
+  );
 }
 
 // CSS da animação (pode manter)
@@ -95,6 +84,5 @@ const styleSheet = document.createElement("style");
 styleSheet.type = "text/css";
 styleSheet.innerText = "@keyframes spin { to { transform: rotate(360deg); } }";
 document.head.appendChild(styleSheet);
-
 
 export default App;

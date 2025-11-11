@@ -1,28 +1,27 @@
 import { useState } from 'react';
-import { Search, User, LogOut, Plus, Settings } from 'lucide-react';
+// 1. IMPORTA O ÍCONE 'Home'
+import { Search, User, LogOut, Plus, Settings, Home } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import './Navbar.css';
-import logoEmyflix2 from '../../assets/logo2.png';
-
+import logoEmyflix from '../../assets/logo.png'; 
 function Navbar({ onBuscar, onNavegar }) { 
-  // Pega os dados do usuário e a função signOut
   const { user, signOut } = useAuth();
-  const [buscaAberta, setBuscaAberta] = useState(false);
+  
   const [termoBusca, setTermoBusca] = useState('');
   const [menuAberto, setMenuAberto] = useState(false);
+  
 
   const handleBuscar = (e) => {
     e.preventDefault();
     if (onBuscar && termoBusca.trim()) {
       onBuscar(termoBusca);
-      setBuscaAberta(false);
     }
   };
 
   const handleLogout = async () => {
     try {
       await signOut();
-      // O App.jsx vai detectar a mudança e nos levará para o Login.
+      onNavegar('login'); // Força a ida ao login ao sair
     } catch (error) {
       console.error('Erro ao sair:', error);
     }
@@ -31,44 +30,63 @@ function Navbar({ onBuscar, onNavegar }) {
   return (
     <nav className="navbar">
       <div className="navbarContainer">
-        <div className="navbarLogo" onClick={() => onNavegar?.('home')}>
-          <img src={logoEmyflix2} alt="Logo" className="navbarLogoImg" />
-          <span className="navbarTitulo">EmyFlix</span>
+        
+        {/* Logo */}
+        <div className="navbarLado esquerdo">
+          <div className="navbarLogo" onClick={() => onNavegar('home')}>
+            <img src={logoEmyflix} alt="Logo" className="navbarLogoImg" />
+            <span className="navbarTitulo">EmyFlix</span>
+          </div>
         </div>
 
-        <div className="navbarAcoes">
-          {/* --- Formulário de Busca --- */}
-          <form onSubmit={handleBuscar} className={`navbarBusca ${buscaAberta ? 'aberta' : ''}`}>
-            <button
-              type="button"
-              className="navbarBotaoIcone"
-              onClick={() => setBuscaAberta(!buscaAberta)}
-            >
-              <Search size={22} />
+        {/* Busca */}
+        <div className="navbarLado centro">
+          <form className="navbarBusca" onSubmit={handleBuscar}>
+            <input
+              type="text"
+              placeholder="Buscar filmes, gêneros..."
+              value={termoBusca}
+              onChange={(e) => setTermoBusca(e.target.value)}
+              className="navbarBuscaInput"
+            />
+            <button type="submit" className="navbarBuscaBotao">
+              <Search size={20} />
             </button>
-            {buscaAberta && (
-              <input
-                type="text"
-                placeholder="Buscar filmes..."
-                value={termoBusca}
-                onChange={(e) => setTermoBusca(e.target.value)}
-                className="navbarBuscaInput"
-                autoFocus
-              />
-            )}
           </form>
+        </div>
 
-          {/* --- Botão de Adicionar Filme --- */}
+      
+        <div className="navbarLado direito">
+          {/* Botão Home (Ícone) */}
           <button
             type="button"
             className="navbarBotaoIcone"
-            onClick={() => onNavegar?.('adicionar')}
-            title="Adicionar filme"
+            onClick={() => onNavegar('home')}
+            title="Início"
           >
-            <Plus size={22} />
+            <Home size={22} />
+          </button>
+          
+          {/* Botão Listar Filmes (Texto) */}
+          <button
+            type="button"
+            className="navbarBotaoTexto"
+            onClick={() => onNavegar('listar-filmes')}
+          >
+            Listar Filmes
           </button>
 
-          {/* --- Menu do Usuário --- */}
+          {/* Botão Adicionar Filme (Texto) */}
+          <button
+            type="button"
+            className="navbarBotaoTexto"
+            onClick={() => onNavegar('adicionar')}
+          >
+            Adicionar Filme
+          </button>
+
+
+          {/* --- Menu do Usuário (Ícone) --- */}
           <div className="navbarUsuario">
             <button
               type="button"
@@ -81,20 +99,32 @@ function Navbar({ onBuscar, onNavegar }) {
             {/* O Menu Dropdown */}
             {menuAberto && (
               <div className="navbarMenu">
+
+                {/* === AQUI ESTÁ A MUDANÇA QUE VOCÊ PEDIU === */}
                 <div className="navbarMenuHeader">
-                  <p className="navbarMenuNome">{user?.nome}</p>
-                  {user?.role === 'adm' && (
-                    <span className="navbarMenuAdmin">Admin</span>
-                  )}
+                  {/* 1. O ÍCONE DO USUÁRIO (dentro do menu) */}
+                  <div className="navbarMenuAvatar">
+                    <User size={20} />
+                  </div>
+                  {/* 2. O NOME E O PAPEL */}
+                  <div className="navbarMenuInfo">
+                    <p className="navbarMenuNome">{user?.nome}</p>
+                    {user?.role && (
+                      <span className={user.role === 'adm' ? 'navbarMenuAdmin' : 'navbarMenuRole'}>
+                        {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                      </span>
+                    )}
+                    
+                  </div>
                 </div>
 
-                {/* Só mostra o link do Painel Admin se for 'adm' */}
+                {/* Link do Painel Admin (só para admins) */}
                 {user?.role === 'adm' && (
                   <button
                     type="button"
                     className="navbarMenuItem"
                     onClick={() => {
-                      onNavegar?.('admin');
+                      onNavegar('admin');
                       setMenuAberto(false);
                     }}
                   >
@@ -103,7 +133,7 @@ function Navbar({ onBuscar, onNavegar }) {
                   </button>
                 )}
 
-                {/* Botão de Sair */}
+                {/* Botão de Sair (agora fica embaixo do nome) */}
                 <button
                   type="button"
                   className="navbarMenuItem"
@@ -115,7 +145,7 @@ function Navbar({ onBuscar, onNavegar }) {
               </div>
             )}
           </div>
-        </div>
+        </div> 
       </div>
     </nav>
   );

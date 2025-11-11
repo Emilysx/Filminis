@@ -101,7 +101,11 @@ def handle_login(handler_instance):
         if check_password(senha_digitada, senha_hashed_do_banco):
             # Senha correta!
             # Cria um "crachá" (Token)
-            token = create_token(user_id=usuario['id'], user_role=usuario['role_nome'])
+            token = create_token(
+                user_id=usuario['id'], 
+                user_role=usuario['role_nome'],
+                user_nome=usuario['nome']
+            )
             
             # Envia a resposta de sucesso com o token
             send_json_response(handler_instance, 200, {

@@ -109,7 +109,7 @@ INSERT INTO generos (nome) VALUES
 
 -- Filmes
 INSERT INTO filmes (id, titulo, ano, sinopse, poster_url, duracao) VALUES
-(1, 'Divertida Mente 2', 2024, 'Novas emoções chegam à mente da adolescente Riley: Ansiedade, Tédio, Inveja e Vergonha, causando um caos na sala de controle.', 'http://www.impawards.com/2024/posters/inside_out_two_ver15_xlg.jpg', '1h 36m'),
+(1, 'Divertida Mente 2', 2024, 'Novas emoções chegam à mente da adolescente Riley: Ansiedade, Tédio, Inveja e Vergonha, causando um caos na sala de controle.', 'https://p2.trrsf.com/image/fget/cf/940/0/images.terra.com/2024/04/19/1325831308-poster.jpg', '1h 36m'),
 (2, 'Super Mario Bros: O Filme', 2023, 'Mario e Luigi, dois encanadores, vão parar no Reino dos Cogumelos, governado pela Princesa Peach, e precisam salvá-lo das garras do temível Bowser.', 'https://cdn.awsli.com.br/800x800/1610/1610163/produto/208807923/poster-super-mario-bros-o-filme-i-f04111d3.jpg', '1h 32m'),
 (3, 'Encanto', 2021, 'Na Colômbia, a mágica família Madrigal vive em uma casa encantada. Mirabel é a única sem um dom mágico, mas pode ser a última esperança da família.', 'https://br.web.img3.acsta.net/pictures/21/09/29/18/02/2861381.jpg', '1h 42m'),
 (4, 'O Menino e a Garça', 2023, 'Após a morte da mãe, o jovem Mahito se muda para o campo e encontra uma garça falante que o leva a uma torre misteriosa e um mundo fantástico.', 'https://ingresso-a.akamaihd.net/prd/img/movie/o-menino-e-a-garca/654da114-f4e6-4929-aa37-176f44b84bc7.webp', '2h 04m'),

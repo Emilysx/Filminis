@@ -1,0 +1,62 @@
+.footer {
+  padding: 3rem 2rem;
+  /* Reutiliza o mesmo gradiente da Navbar para consistência */
+  background: linear-gradient(135deg, #369DA1 0%, #21618D 100%);
+  color: #D9ECE3; /* Texto claro (o verde-claro do seu tema) */
+  margin-top: 3rem; /* Separa o footer do conteúdo da página */
+}
+
+.footerContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+.footerLogo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.footerLogoImg {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+}
+
+.footerTitulo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: white;
+}
+
+.footerLinks {
+  display: flex;
+  flex-wrap: wrap; /* Para quebrar a linha em telas pequenas */
+  justify-content: center;
+  gap: 1rem 2rem;
+  margin-top: 1rem;
+}
+
+.footerLink {
+  color: #D9ECE3;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.footerLink:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.footerCopyright {
+  font-size: 0.9rem;
+  color: #D9ECE3;
+  opacity: 0.8;
+  margin-top: 1rem;
+}

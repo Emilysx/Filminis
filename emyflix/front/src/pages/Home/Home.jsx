@@ -1,20 +1,25 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+
 import Navbar from '../../components/Navbar/Navbar';
 import Carrossel from '../../components/Carrossel/Carrossel';
-import FilmeCarrossel from '../../components/FilmeCarrossel/FilmeCarrossel'; 
+import FilmeCarrossel from '../../components/FilmeCarrossel/FilmeCarrossel';
 import bannerHome from '../../assets/banner-home.png';
 import './Home.css';
 
+const IDS_DESTAQUE_CARROSSEL = [1, 5, 11, 9, 6];
+
+
 function Home({ onNavegar }) {
   const { token } = useAuth();
-  const [todosOsFilmes, setTodosOsFilmes] = useState([]);
+  
+  const [filmesRecentes, setFilmesRecentes] = useState([]);
   const [filmesDestaque, setFilmesDestaque] = useState([]);
+  const [filmesVistos, setFilmesVistos] = useState([]); 
   
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
-
-
+  
   useEffect(() => {
     const carregarDados = async () => {
       try {
@@ -26,10 +31,14 @@ function Home({ onNavegar }) {
 
         if (!response.ok) throw new Error('Falha ao buscar filmes.');
 
-        const filmesData = await response.json();
+        const filmesData = await response.json(); // Pega TODOS os filmes
         
-        setTodosOsFilmes(filmesData);
-        setFilmesDestaque(filmesData.slice(0, 5));
+        const filmesParaDestaque = IDS_DESTAQUE_CARROSSEL
+          .map(id => filmesData.find(filme => filme.id === id))
+          .filter(Boolean);
+        
+        setFilmesDestaque(filmesParaDestaque);
+        setFilmesRecentes(filmesData); 
 
       } catch (err) {
         setErro(err.message);
@@ -66,24 +75,19 @@ function Home({ onNavegar }) {
       <Navbar onBuscar={handleBuscar} onNavegar={onNavegar} />
       
       <main className="homeContainer">
+        
         <Carrossel 
           filmes={filmesDestaque} 
           onFilmeClick={handleVerFilme} 
         />
 
-        <img src={bannerHome} alt="Bem-vindo ao EmyFlix" className="homeBannerImagem" />
-        
         <FilmeCarrossel 
           titulo="Cadastrados Recentemente"
-          filmes={todosOsFilmes} 
+          filmes={filmesRecentes} 
           onFilmeClick={handleVerFilme} 
         />
         
-        {/*
-          PRÓXIMOS PASSOS:
-          <FilmeCarrossel titulo="Visto Recentemente" ... />
-          <Footer />
-        */}
+        {/* (Visto Recentemente e Footer) */}
 
       </main>
     </div>

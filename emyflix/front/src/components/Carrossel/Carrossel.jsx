@@ -1,65 +1,76 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react'; 
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './Carrossel.css';
+import bannerHome from '../../assets/banner-home.png';
 
 function Carrossel({ filmes, onFilmeClick }) {
   const [indiceAtual, setIndiceAtual] = useState(0);
 
-  // Efeito para trocar o slide automaticamente a cada 5 segundos
+  const bannerSlide = {
+    id: 'banner-01',
+    isBanner: true // Usamos isso para saber o que renderizar
+  };
+
+  const slides = [bannerSlide, ...filmes];
+
   useEffect(() => {
-    if (filmes.length === 0) return;
+    if (slides.length === 0) return;
     const intervalo = setInterval(() => {
-      setIndiceAtual((prev) => (prev + 1) % filmes.length);
-    }, 5000);
+      setIndiceAtual((prev) => (prev + 1) % slides.length);
+    }, 5000); // 5 segundos por slide
     return () => clearInterval(intervalo);
-  }, [filmes.length]);
+  }, [slides.length]);
 
-  // Funções para os botões de seta
-  const anterior = () => setIndiceAtual((prev) => (prev - 1 + filmes.length) % filmes.length);
-  const proximo = () => setIndiceAtual((prev) => (prev + 1) % filmes.length);
+  const anterior = () => setIndiceAtual((prev) => (prev - 1 + slides.length) % slides.length);
+  const proximo = () => setIndiceAtual((prev) => (prev + 1) % slides.length);
 
-  if (filmes.length === 0) return null; // Não mostra nada se a lista de filmes estiver vazia
-
-  const filmeAtual = filmes[indiceAtual];
+  if (slides.length === 0) return null;
+  const slideAtual = slides[indiceAtual];
 
   return (
     <section className="carrossel">
       <div className="carrosselContainer">
-        <div className="carrosselImagem">
-          {filmeAtual.poster_url ? (
-            <img src={filmeAtual.poster_url} alt={filmeAtual.titulo} />
-          ) : (
-            <div className="carrosselPlaceholder">
-              <span>{filmeAtual.titulo[0]}</span>
+        {slideAtual.isBanner ? (
+          <div className="carrosselImagem">
+            <img src={bannerHome} alt="Bem-vindo ao EmyFlix" className="carrosselBanner" />
+          </div>
+        ) : (
+          <>
+            <div className="carrosselImagem">
+              {slideAtual.poster_url ? (
+                <img src={slideAtual.poster_url} alt={slideAtual.titulo} />
+              ) : (
+                <div className="carrosselPlaceholder">
+                  <span>{slideAtual.titulo[0]}</span>
+                </div>
+              )}
+              <div className="carrosselGradiente" />
             </div>
-          )}
-          <div className="carrosselGradiente" />
-        </div>
 
-        <div className="carrosselInfo">
-          <h2 className="carrosselTitulo">{filmeAtual.titulo}</h2>
-          <p className="carrosselAno">{filmeAtual.ano}</p>
-          {filmeAtual.generos && filmeAtual.generos.length > 0 && (
-            <div className="carrosselCategorias">
-              {filmeAtual.generos.map((genero) => (
-                // A 'key' agora é o próprio nome do gênero
-                <span key={genero} className="carrosselCategoria">
-                  {genero}
-                </span>
-              ))}
+            <div className="carrosselInfo">
+              <h2 className="carrosselTitulo">{slideAtual.titulo}</h2>
+              <p className="carrosselAno">{slideAtual.ano}</p>
+              {slideAtual.generos && slideAtual.generos.length > 0 && (
+                <div className="carrosselCategorias">
+                  {slideAtual.generos.map((genero) => (
+                    <span key={genero} className="carrosselCategoria">
+                      {genero}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <p className="carrosselSinopse">{slideAtual.sinopse}</p>
+              <button
+                type="button"
+                className="carrosselBotao"
+                onClick={() => onFilmeClick(slideAtual.id)}
+              >
+                Ver Detalhes
+              </button>
             </div>
-          )}
+          </>
+        )}
 
-          <p className="carrosselSinopse">{filmeAtual.sinopse}</p>
-
-          <button
-            type="button"
-            className="carrosselBotao"
-            onClick={() => onFilmeClick(filmeAtual.id)}
-          >
-            Ver Detalhes
-          </button>
-        </div>
 
         {/* Botões de Controle (Setas) */}
         <button type="button" className="carrosselControle carrosselControleEsquerda" onClick={anterior}>
@@ -69,9 +80,8 @@ function Carrossel({ filmes, onFilmeClick }) {
           <ChevronRight size={32} />
         </button>
 
-        {/* Indicadores (Bolinhas) */}
         <div className="carrosselIndicadores">
-          {filmes.map((_, index) => (
+          {slides.map((_, index) => (
             <button
               key={index}
               type="button"
