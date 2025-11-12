@@ -5,6 +5,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import Carrossel from '../../components/Carrossel/Carrossel';
 import FilmeCarrossel from '../../components/FilmeCarrossel/FilmeCarrossel';
 import bannerHome from '../../assets/banner-home.png';
+import Footer from '../../components/Footer/Footer';
 import './Home.css';
 
 const IDS_DESTAQUE_CARROSSEL = [1, 5, 11, 9, 6];
@@ -86,10 +87,9 @@ function Home({ onNavegar }) {
           filmes={filmesRecentes} 
           onFilmeClick={handleVerFilme} 
         />
-        
-        {/* (Visto Recentemente e Footer) */}
-
       </main>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

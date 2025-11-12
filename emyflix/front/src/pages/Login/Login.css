@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: flex-end;
   padding: 2rem;
-  background-image: url(../../assets/fundo-login.png); 
+  background-image: url(../../assets/fundo-login.png);
   background-size: cover;
   background-position: center;
   font-family: 'Poppins', sans-serif;
@@ -17,11 +17,11 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 450px;
-  margin-right: 10%; 
+  margin-right: 10%;
 }
 
 .loginTitulo {
-  font-size: 2rem; 
+  font-size: 2rem;
   font-weight: 700;
   color: #21618D;
   margin-bottom: 0.5rem;
@@ -78,13 +78,14 @@
   color: #21618D;
   text-decoration: none;
 }
+
 .loginLinkEsqueceu:hover {
   text-decoration: underline;
 }
 
 .loginBotao {
   padding: 1rem;
-  background: #21618D; 
+  background: #21618D;
   color: white;
   border: none;
   border-radius: 8px;
@@ -115,6 +116,7 @@
   font-size: 0.875rem;
   margin-top: 1.5rem;
 }
+
 .loginDivisor::before,
 .loginDivisor::after {
   content: '';
@@ -146,6 +148,7 @@
   color: #333;
   transition: all 0.3s ease;
 }
+
 .loginBotaoSocial:hover {
   background: #f9f9f9;
   border-color: #ccc;

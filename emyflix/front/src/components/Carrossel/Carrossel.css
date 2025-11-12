@@ -23,7 +23,7 @@
 .carrosselImagem img {
   width: 100%;
   height: 100%;
-  object-fit: cover; 
+  object-fit: cover;
   object-position: center center;
   animation: fadeIn 0.5s ease-in-out;
 }
@@ -31,7 +31,8 @@
 .carrosselBanner {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Faz o banner cobrir o espaço */
+  object-fit: cover;
+  /* Faz o banner cobrir o espaço */
   animation: fadeIn 0.5s ease-in-out;
 }
 
@@ -39,6 +40,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -72,7 +74,7 @@
 .carrosselInfo {
   position: absolute;
   bottom: 3rem;
-  left: 6rem; 
+  left: 6rem;
   right: 6rem;
   z-index: 10;
   color: white;
@@ -207,35 +209,45 @@
     height: 400px;
     border-radius: 16px;
   }
+
   .carrosselInfo {
     bottom: 2rem;
     left: 1.5rem;
     right: 1.5rem;
   }
+
   .carrosselTitulo {
     font-size: 1.75rem;
   }
+
   .carrosselAno {
     font-size: 1rem;
   }
+
   .carrosselSinopse {
     font-size: 0.9rem;
-    -webkit-line-clamp: 2; /* Mantém 2 linhas */
+    -webkit-line-clamp: 2;
+    /* Mantém 2 linhas */
   }
+
   .carrosselBotao {
     padding: 0.875rem 1.5rem;
     font-size: 1rem;
   }
+
   .carrosselControle {
     width: 48px;
     height: 48px;
   }
+
   .carrosselControleEsquerda {
     left: 1rem;
   }
+
   .carrosselControleDireita {
     right: 1rem;
   }
+
   .carrosselPlaceholder span {
     font-size: 4rem;
   }

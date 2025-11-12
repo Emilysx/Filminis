@@ -4,29 +4,17 @@ import Login from './pages/Login/Login';
 import Cadastro from './pages/Cadastro/Cadastro';
 import Intro from './components/Intro/Intro';
 import Home from './pages/Home/Home';
-import Footer from './components/Footer/Footer'; // <-- 1. IMPORTE O FOOTER
+import Footer from './components/Footer/Footer';
+
+// 1. IMPORTE A NOVA PÁGINA
+import DetalheFilme from './pages/DetalheFilme/DetalheFilme';
+
+// (Vamos importar o resto depois)
+// import FormularioFilme from './pages/FormularioFilme/FormularioFilme';
+// import PainelAdmin from './pages/PainelAdmin/PainelAdmin';
 
 // ... (Componente LoadingScreen fica aqui, sem mudanças) ...
-function LoadingScreen() {
-  return (
-    <div style={{ 
-      minHeight: '100vh', display: 'flex', 
-      alignItems: 'center', justifyContent: 'center',
-      backgroundColor: '#D9ECE3' 
-    }}>
-      <div style={{ textAlign: 'center' }}>
-        <div style={{
-          width: '60px', height: '60px',
-          border: '4px solid rgba(54, 157, 161, 0.2)',
-          borderTopColor: '#369DA1',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
-        }} />
-      </div>
-    </div>
-  );
-}
-// --- Fim do LoadingScreen ---
+function LoadingScreen() { /* ...código... */ }
 
 function AppContent() {
   const { user, loading } = useAuth();
@@ -58,23 +46,35 @@ function AppContent() {
     if (rota === 'cadastro') {
       return <Cadastro onNavigate={navegar} />;
     }
-    // O padrão é Login
     return <Login onNavigate={navegar} />;
   }
 
   // --- FLUXO DE LOGADO ---
-  // (Aqui vamos adicionar as outras páginas depois)
   
-  // A rota padrão é a 'home'
+  // 2. ATIVE A ROTA DO FILME
+  if (rota === 'filme' && params.id) {
+    return <DetalheFilme filmeId={params.id} onNavegar={navegar} />;
+  }
+
+  // (Vamos descomentar isso nos próximos passos)
+  // if (rota === 'adicionar') {
+  //   return <FormularioFilme onNavegar={navegar} />;
+  // }
+  // if (rota === 'editar' && params.id) {
+  //   return <FormularioFilme filmeId={params.id} onNavegar={navegar} />;
+  // }
+  // if (rota === 'admin') {
+  //   return <PainelAdmin onNavegar={navegar} />;
+  // }
+
+  // A rota padrão para um usuário logado é a 'home'
   return <Home onNavegar={navegar} />;
 }
 
 function App() {
   return (
-    // 2. O App agora é um 'Fragmento' que envolve o conteúdo e o footer
     <>
       <AppContent />
-      <Footer />
     </>
   );
 }
@@ -84,5 +84,6 @@ const styleSheet = document.createElement("style");
 styleSheet.type = "text/css";
 styleSheet.innerText = "@keyframes spin { to { transform: rotate(360deg); } }";
 document.head.appendChild(styleSheet);
+
 
 export default App;

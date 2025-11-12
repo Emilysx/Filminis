@@ -4,14 +4,14 @@
   z-index: 1000;
   background: linear-gradient(135deg, #369DA1 0%, #21618D 100%);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  padding: 0.75rem 2rem; 
+  padding: 0.75rem 2rem;
 }
 
 .navbarContainer {
   max-width: 1400px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: auto 1fr auto; 
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 1.5rem;
 }
@@ -20,23 +20,30 @@
 .navbarLado.esquerdo {
   display: flex;
 }
+
 .navbarLogo {
   display: flex;
   align-items: center;
-  gap: 0.95rem; /* Menor espaço */
+  gap: 0.95rem;
+  /* Menor espaço */
   cursor: pointer;
   transition: transform 0.3s ease;
 }
+
 .navbarLogo:hover {
   transform: scale(1.08);
 }
+
 .navbarLogoImg {
-  width: 45px; /* Um pouco menor */
+  width: 45px;
+  /* Um pouco menor */
   height: 45px;
   object-fit: contain;
 }
+
 .navbarTitulo {
-  font-size: 1.5rem; /* Um pouco menor */
+  font-size: 1.5rem;
+  /* Um pouco menor */
   font-weight: 800;
   color: white;
   letter-spacing: 0.05em;
@@ -45,19 +52,23 @@
 /* 3. CENTRO (Barra de Busca) */
 .navbarLado.centro {
   display: flex;
-  justify-content: center; /* Centraliza a barra */
+  justify-content: center;
+  /* Centraliza a barra */
   padding: 0 1rem;
 }
+
 .navbarBusca {
   display: flex;
   align-items: center;
   background: white;
   border-radius: 15px;
   width: 100%;
-  max-width: 450px; /* Largura máxima da busca */
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  max-width: 450px;
+  /* Largura máxima da busca */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
+
 .navbarBuscaInput {
   flex-grow: 1;
   border: none;
@@ -67,14 +78,18 @@
   padding: 0.75rem 1.25rem;
   font-family: inherit;
 }
+
 .navbarBuscaInput:focus {
   outline: none;
 }
+
 .navbarBuscaInput::placeholder {
   color: #369DA1;
 }
+
 .navbarBuscaBotao {
-  background: #D9ECE3; /* Cor de fundo verde-claro */
+  background: #D9ECE3;
+  /* Cor de fundo verde-claro */
   border: none;
   color: #21618D;
   cursor: pointer;
@@ -84,6 +99,7 @@
   justify-content: center;
   transition: background 0.3s ease;
 }
+
 .navbarBuscaBotao:hover {
   background: #c8dbd2;
 }
@@ -92,7 +108,8 @@
 .navbarLado.direito {
   display: flex;
   align-items: center;
-  gap: 0.75rem; /* Espaço entre os ícones/botões */
+  gap: 0.75rem;
+  /* Espaço entre os ícones/botões */
 }
 
 /* Botões SÓ COM ÍCONE (Home, Perfil) */
@@ -102,7 +119,8 @@
   border: none;
   color: white;
   cursor: pointer;
-  width: 44px; /* Tamanho fixo */
+  width: 44px;
+  /* Tamanho fixo */
   height: 44px;
   border-radius: 50%;
   display: flex;
@@ -110,6 +128,7 @@
   justify-content: center;
   transition: all 0.3s ease;
 }
+
 .navbarBotaoIcone:hover,
 .navbarBotaoUsuario:hover {
   background: rgba(255, 255, 255, 0.3);
@@ -129,6 +148,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
 }
+
 .navbarBotaoTexto:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
@@ -138,9 +158,11 @@
 .navbarUsuario {
   position: relative;
 }
+
 .navbarMenu {
   position: absolute;
-  top: calc(100% + 0.75rem); /* Um pouco mais de espaço */
+  top: calc(100% + 0.75rem);
+  /* Um pouco mais de espaço */
   right: 0;
   background: white;
   border-radius: 12px;
@@ -149,17 +171,28 @@
   overflow: hidden;
   animation: slideDown 0.3s ease;
 }
+
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.navbarMenuHeader { 
-  padding: 1rem; 
-  border-bottom: 1px solid #D9ECE3; 
-  display: flex; /* <-- NOVO */
-  align-items: center; /* <-- NOVO */
-  gap: 0.75rem; /* <-- NOVO */
+.navbarMenuHeader {
+  padding: 1rem;
+  border-bottom: 1px solid #D9ECE3;
+  display: flex;
+  /* <-- NOVO */
+  align-items: center;
+  /* <-- NOVO */
+  gap: 0.75rem;
+  /* <-- NOVO */
 }
 
 /* O círculo para o ícone do usuário */
@@ -172,57 +205,86 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0; /* Impede que o ícone achate */
+  flex-shrink: 0;
+  /* Impede que o ícone achate */
 }
 
-.navbarMenuNome { 
-  font-weight: 600; 
-  color: #21618D; 
-  margin-bottom: 0.25rem; 
+.navbarMenuNome {
+  font-weight: 600;
+  color: #21618D;
+  margin-bottom: 0.25rem;
   line-height: 1.2;
 }
 
-.navbarMenuAdmin { 
-  display: inline-block; 
-  background: linear-gradient(135deg, #F498AE 0%, #72B488 100%); 
-  color: white; 
-  padding: 0.25rem 0.75rem; 
-  border-radius: 12px; 
-  font-size: 0.75rem; 
-  font-weight: 600; 
+.navbarMenuAdmin {
+  display: inline-block;
+  background: linear-gradient(135deg, #F498AE 0%, #72B488 100%);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 .navbarMenuRole {
   display: inline-block;
-  background: #D9ECE3; /* O fundo verde-claro do tema */
-  color: #17434F; /* O texto escuro do tema */
+  background: #D9ECE3;
+  /* O fundo verde-claro do tema */
+  color: #17434F;
+  /* O texto escuro do tema */
   padding: 0.25rem 0.75rem;
   border-radius: 8px;
   font-size: 0.68rem;
   font-weight: 600;
 }
 
-.navbarMenuItem { width: 100%; padding: 0.875rem 1rem; background: none; border: none; display: flex; align-items: center; gap: 0.75rem; color: #17434F; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: background 0.3s ease; text-align: left; }
-.navbarMenuItem:hover { background: #D9ECE3; }
+.navbarMenuItem {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #17434F;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  text-align: left;
+}
+
+.navbarMenuItem:hover {
+  background: #D9ECE3;
+}
 
 /* 5. RESPONSIVIDADE (Simplificado por enquanto) */
 @media (max-width: 900px) {
+
   /* Em telas menores, esconde os botões de texto */
   .navbarBotaoTexto {
     display: none;
   }
+
   .navbarContainer {
-    grid-template-columns: 1fr 1fr; /* 2 Colunas: Logo | Busca+Ações */
+    grid-template-columns: 1fr 1fr;
+    /* 2 Colunas: Logo | Busca+Ações */
     gap: 1rem;
   }
+
   .navbarLado.centro {
-    grid-row: 2; /* Joga a busca para a linha de baixo */
-    grid-column: 1 / -1; /* Ocupa a largura total */
+    grid-row: 2;
+    /* Joga a busca para a linha de baixo */
+    grid-column: 1 / -1;
+    /* Ocupa a largura total */
     padding: 0.5rem 0 0 0;
   }
+
   .navbarLado.direito {
-    justify-content: flex-end; /* Alinha ícones à direita */
+    justify-content: flex-end;
+    /* Alinha ícones à direita */
   }
+
   .navbar {
     padding: 1rem;
   }

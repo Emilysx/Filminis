@@ -1,25 +1,31 @@
 .footer {
-  padding: 3rem 2rem;
-  /* Reutiliza o mesmo gradiente da Navbar para consistência */
+  padding: 2.5rem 2rem 2rem 2rem;
   background: linear-gradient(135deg, #369DA1 0%, #21618D 100%);
-  color: #D9ECE3; /* Texto claro (o verde-claro do seu tema) */
-  margin-top: 3rem; /* Separa o footer do conteúdo da página */
+  color: #D9ECE3;
+  margin-top: 3rem;
+  font-family: 'Poppins', sans-serif;
 }
 
-.footerContainer {
+/* Container para as colunas principais */
+.footerContentWrapper {
   max-width: 1400px;
-  margin: 0 auto;
+  margin: 0 auto 2rem auto;
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.footerSection {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  text-align: center;
 }
 
 .footerLogo {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .footerLogoImg {
@@ -32,31 +38,141 @@
   font-size: 1.5rem;
   font-weight: 800;
   color: white;
+  letter-spacing: 0.05em;
 }
 
-.footerLinks {
+.footerDescription {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: #c8dbd2;
+}
+
+/* Redes Sociais */
+.footerSocials {
   display: flex;
-  flex-wrap: wrap; /* Para quebrar a linha em telas pequenas */
-  justify-content: center;
-  gap: 1rem 2rem;
-  margin-top: 1rem;
+  gap: 1rem;
 }
 
-.footerLink {
-  color: #D9ECE3;
+.footerSocials a {
+  color: white;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.footerSocials a:hover {
+  color: #F498AE;
+  transform: translateY(-3px);
+}
+
+/* Títulos das Seções de Links */
+.footerSectionTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+/* Grupos de Links (Navegação, Recursos, EmyFlix) */
+.footerLinksGroup a {
+  display: block;
+  color: #c8dbd2;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 400;
+  font-size: 0.95rem;
+  margin-bottom: 0.6rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.footerLinksGroup a:hover {
+  color: white;
+  transform: translateX(5px);
+}
+
+/* Seção Inferior (Copyright e Links de Política) */
+.footerBottom {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footerCopyright {
+  font-size: 0.85rem;
+  color: #c8dbd2;
+  margin: 0;
+}
+
+.footerPolicyLinks {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footerPolicyLink {
+  color: #c8dbd2;
+  text-decoration: none;
+  font-size: 0.85rem;
   transition: color 0.3s ease;
 }
 
-.footerLink:hover {
+.footerPolicyLink:hover {
   color: white;
   text-decoration: underline;
 }
 
-.footerCopyright {
-  font-size: 0.9rem;
-  color: #D9ECE3;
-  opacity: 0.8;
-  margin-top: 1rem;
+/* RESPONSIVIDADE */
+@media (max-width: 992px) {
+  .footerContentWrapper {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footerAbout {
+    grid-column: 1 / -1;
+    text-align: center;
+    align-items: center;
+  }
+
+  .footerLogo {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer {
+    padding: 2rem 1rem;
+  }
+
+  .footerContentWrapper {
+    grid-template-columns: 1fr;
+
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .footerSection {
+    align-items: center;
+    text-align: center;
+  }
+
+  .footerLinksGroup a {
+    margin-bottom: 0.5rem;
+  }
+
+  .footerBottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footerPolicyLinks {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footerSectionTitle {
+    margin-bottom: 0.75rem;
+  }
 }
