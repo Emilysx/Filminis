@@ -4,7 +4,7 @@
 }
 
 .detalheContainer {
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 2rem;
 }
@@ -55,20 +55,28 @@
 .detalheConteudo {
     display: grid;
     grid-template-columns: 350px 1fr;
-    gap: 2.5rem;
+    gap:5px;
     background: white;
     border-radius: 24px;
-    padding: 2.5rem;
+    padding: 1rem;
+    padding-top: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .detalhePoster {
-    width: 70%; 
+    width: 295px;
+    height: 400px; 
     aspect-ratio: 2/3;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     margin: 0 auto;
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
 }
 
 .detalhePoster img {
@@ -100,11 +108,11 @@
 
 .detalheTitulo {
     margin-top: 0%;
-    font-size: 2.75rem;
+    font-size: 2.30rem;
     font-weight: 800;
     color: #21618D;
     line-height: 1.2;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .detalheMetadata {
@@ -149,10 +157,11 @@
 }
 
 .detalheSecaoTitulo {
+    margin-top: 8px;
+    margin-bottom: 10px;
     font-size: 1.15rem;
     font-weight: 700;
     color: #21618D;
-    margin-bottom: 10px;
 }
 
 .detalheSinopse {
@@ -163,6 +172,8 @@
 }
 
 .detalheLista {
+    margin-top: 0%;
+    margin-bottom: 5px;
     font-size: 1rem;
     line-height: 1.6;
     color: #17434F;
@@ -175,7 +186,6 @@
     display: flex;
     gap: 1rem;
     margin-top: 1rem;
-    /* Espaço para separar dos outros */
     border-top: 1px solid #EAEAEA;
     padding-top: 1.5rem;
 }

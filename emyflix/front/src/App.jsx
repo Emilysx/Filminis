@@ -5,12 +5,12 @@ import Cadastro from './pages/Cadastro/Cadastro';
 import Intro from './components/Intro/Intro';
 import Home from './pages/Home/Home';
 import Footer from './components/Footer/Footer';
-
-// 1. IMPORTE A NOVA PÁGINA
 import DetalheFilme from './pages/DetalheFilme/DetalheFilme';
 
-// (Vamos importar o resto depois)
-// import FormularioFilme from './pages/FormularioFilme/FormularioFilme';
+// 1. IMPORTA O NOVO NOME (com o caminho novo)
+import CadastroFilmes from './pages/CadastroFilmes/CadastroFilmes';
+
+// (PainelAdmin vem depois)
 // import PainelAdmin from './pages/PainelAdmin/PainelAdmin';
 
 // ... (Componente LoadingScreen fica aqui, sem mudanças) ...
@@ -51,23 +51,24 @@ function AppContent() {
 
   // --- FLUXO DE LOGADO ---
   
-  // 2. ATIVE A ROTA DO FILME
   if (rota === 'filme' && params.id) {
     return <DetalheFilme filmeId={params.id} onNavegar={navegar} />;
   }
 
+  // 2. USA O NOVO COMPONENTE
+  if (rota === 'adicionar') {
+    return <CadastroFilmes onNavegar={navegar} />;
+  }
+
   // (Vamos descomentar isso nos próximos passos)
-  // if (rota === 'adicionar') {
-  //   return <FormularioFilme onNavegar={navegar} />;
-  // }
   // if (rota === 'editar' && params.id) {
-  //   return <FormularioFilme filmeId={params.id} onNavegar={navegar} />;
+  //   return <CadastroFilmes filmeId={params.id} onNavegar={navegar} />;
   // }
   // if (rota === 'admin') {
   //   return <PainelAdmin onNavegar={navegar} />;
   // }
 
-  // A rota padrão para um usuário logado é a 'home'
+  // A rota padrão é a 'home'
   return <Home onNavegar={navegar} />;
 }
 
