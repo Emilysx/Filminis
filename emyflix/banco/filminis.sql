@@ -1,5 +1,5 @@
 -- Tabelas principais
-
+-- drop database filminis;
 CREATE DATABASE filminis;
 USE filminis;
 

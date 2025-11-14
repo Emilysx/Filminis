@@ -1,45 +1,36 @@
 # Este é o Controlador de Filmes, ele lida com a LÓGICA de buscar, listar, adicionar e editar filmes.
 
 import json
-from urllib.parse import urlparse, parse_qs # Para a função de busca
+from urllib.parse import urlparse, parse_qs
 from database.db_utils import get_db_connection
 from utils.respostas import parse_json_body, send_json_response, send_error_response 
 import mysql.connector
 
 def handle_get_all_filmes(handler_instance):
-    """ 
-    Lida com [GET] /filmes
-    Busca no banco todos os filmes aprovados e seus respectivos gêneros.
-    """
-    
     conn = get_db_connection()
     if not conn:
         send_error_response(handler_instance, 500, "Erro interno do servidor (DB).")
         return
 
     cursor = conn.cursor(dictionary=True)
-    
-    # Query ATUALIZADA para incluir 'duracao'
     query = """
         SELECT 
             f.id, f.titulo, f.ano, f.sinopse, f.poster_url, f.duracao,
+            l.linguagem AS linguagem,  -- <-- MUDANÇA AQUI
             GROUP_CONCAT(DISTINCT g.nome SEPARATOR ', ') AS generos
         FROM filmes f
         LEFT JOIN filmes_generos fg ON f.id = fg.filme_id
         LEFT JOIN generos g ON fg.genero_id = g.id
-        GROUP BY f.id, f.titulo, f.ano, f.sinopse, f.poster_url, f.duracao;
+        LEFT JOIN linguagens l ON f.id_linguagem = l.id_linguagem -- <-- MUDANÇA AQUI
+        GROUP BY f.id, l.linguagem;
     """
     
     try:
         cursor.execute(query)
         filmes = cursor.fetchall()
-        
-        # Transforma a string "A, B, C" em uma lista ["A", "B", "C"]
         for filme in filmes:
             filme['generos'] = filme['generos'].split(', ') if filme['generos'] else []
-        
         send_json_response(handler_instance, 200, filmes)
-        
     except mysql.connector.Error as err:
         send_error_response(handler_instance, 500, f"Erro no banco de dados: {err.errno} ({err.sqlstate}): {err.msg}")
     finally:
@@ -50,22 +41,16 @@ def handle_get_all_filmes(handler_instance):
 
 
 def handle_get_filme_by_id(handler_instance, filme_id):
-    """ 
-    Lida com [GET] /filmes/<id>
-    Busca todos os detalhes de um único filme pelo seu ID.
-    """
-    
     conn = get_db_connection()
     if not conn:
         send_error_response(handler_instance, 500, "Erro interno do servidor (DB).")
         return
 
     cursor = conn.cursor(dictionary=True)
-    
-    # Query ATUALIZADA para incluir 'duracao' e buscar Personagens (atores)
     query = """
         SELECT 
             f.id, f.titulo, f.ano, f.sinopse, f.poster_url, f.duracao,
+            l.linguagem AS linguagem, -- <-- MUDANÇA AQUI
             GROUP_CONCAT(DISTINCT g.nome SEPARATOR ', ') AS generos,
             GROUP_CONCAT(DISTINCT d.nome SEPARATOR ', ') AS diretores,
             GROUP_CONCAT(DISTINCT a.nome SEPARATOR ', ') AS atores
@@ -76,8 +61,9 @@ def handle_get_filme_by_id(handler_instance, filme_id):
         LEFT JOIN diretores d ON fd.diretor_id = d.id
         LEFT JOIN filmes_atores fa ON f.id = fa.filme_id
         LEFT JOIN atores a ON fa.ator_id = a.id
+        LEFT JOIN linguagens l ON f.id_linguagem = l.id_linguagem -- <-- MUDANÇA AQUI
         WHERE f.id = %s
-        GROUP BY f.id, f.titulo, f.ano, f.sinopse, f.poster_url, f.duracao;
+        GROUP BY f.id, l.linguagem;
     """
     
     try:
@@ -88,16 +74,67 @@ def handle_get_filme_by_id(handler_instance, filme_id):
             send_error_response(handler_instance, 404, "Filme não encontrado.")
             return
 
-        # Funçãozinha interna para transformar string em lista
         def split_to_list(value):
             return value.split(', ') if value else []
 
         filme['generos'] = split_to_list(filme['generos'])
         filme['diretores'] = split_to_list(filme['diretores'])
-        filme['atores'] = split_to_list(filme['atores']) # "atores" aqui é o nome da coluna (Personagens)
+        filme['atores'] = split_to_list(filme['atores'])
         
         send_json_response(handler_instance, 200, filme)
-        
+    except mysql.connector.Error as err:
+        send_error_response(handler_instance, 500, f"Erro no banco de dados: {err.errno} ({err.sqlstate}): {err.msg}")
+    finally:
+        if 'cursor' in locals() and cursor:
+            cursor.close()
+        if 'conn' in locals() and conn and conn.is_connected():
+            conn.close()
+
+
+def handle_create_filme(handler_instance, user_data):
+    body = parse_json_body(handler_instance)
+    if not body:
+        send_error_response(handler_instance, 400, "Corpo da requisição inválido ou vazio.")
+        return
+
+    # Validação (sem mudança)
+    titulo = body.get('titulo')
+    sinopse = body.get('sinopse')
+    poster_url = body.get('poster_url')
+    if not titulo or not sinopse or not poster_url:
+        send_error_response(handler_instance, 400, "Campos 'titulo', 'sinopse' e 'poster_url' são obrigatórios.")
+        return
+
+    solicitado_por_id = user_data['user_id']
+    conn = get_db_connection()
+    if not conn:
+        send_error_response(handler_instance, 500, "Erro interno do servidor (DB).")
+        return
+    cursor = conn.cursor()
+    
+    query = """
+        INSERT INTO solicitacoes_adicao 
+        (titulo, ano, sinopse, poster_url, duracao, 
+         generos_texto, diretores_texto, atores_texto, 
+         solicitado_por_id, id_linguagem, status) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """
+    
+    dados_para_inserir = (
+        titulo, body.get('ano'), sinopse, poster_url, 
+        body.get('duracao'), 
+        body.get('generos_texto'), body.get('diretores_texto'), body.get('atores_texto'),
+        solicitado_por_id,
+        body.get('id_linguagem'),
+        'pendente'
+    )
+    
+    try:
+        cursor.execute(query, dados_para_inserir)
+        conn.commit()
+        send_json_response(handler_instance, 201, {
+            "mensagem": "Filme enviado para aprovação com sucesso."
+        })
     except mysql.connector.Error as err:
         send_error_response(handler_instance, 500, f"Erro no banco de dados: {err.errno} ({err.sqlstate}): {err.msg}")
     finally:

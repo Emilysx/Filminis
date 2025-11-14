@@ -66,21 +66,16 @@ def _processar_e_linkar_dados(cursor, filme_id, tabela_catalogo, tabela_link, co
 
 
 def handle_approve_filme(handler_instance, solicitacao_id):
-    """
-    Lida com [PUT] /admin/aprovar/<id>
-    Aprova uma solicitação de ADIÇÃO de filme (transação).
-    """
-    
+    # ... (conexão com o banco) ...
     conn = get_db_connection()
     if not conn:
         send_error_response(handler_instance, 500, "Erro interno do servidor (DB).")
         return
-
-    conn.autocommit = False # Inicia uma transação (TUDO ou NADA)
+    
+    conn.autocommit = False 
     cursor = conn.cursor(dictionary=True)
     
     try:
-        # Busca a solicitação pendente
         cursor.execute("SELECT * FROM solicitacoes_adicao WHERE id = %s AND status = 'pendente'", (solicitacao_id,))
         solicitacao = cursor.fetchone()
         
@@ -88,28 +83,24 @@ def handle_approve_filme(handler_instance, solicitacao_id):
             send_error_response(handler_instance, 404, "Solicitação não encontrada ou já processada.")
             return
 
-        # Insere o filme na tabela OFICIAL 'filmes'
         query_filme = """
-            INSERT INTO filmes (titulo, ano, sinopse, poster_url, duracao)
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO filmes (titulo, ano, sinopse, poster_url, duracao, id_linguagem)
+            VALUES (%s, %s, %s, %s, %s, %s)
         """
         cursor.execute(query_filme, (
             solicitacao['titulo'], solicitacao['ano'], 
             solicitacao['sinopse'], solicitacao['poster_url'],
-            solicitacao['duracao']
+            solicitacao['duracao'],
+            solicitacao['id_linguagem']
         ))
         
-        filme_id = cursor.lastrowid # Pega o ID do filme que acabou de ser criado
-
-        # Processa os textos e linka tudo
+        filme_id = cursor.lastrowid 
         _processar_e_linkar_dados(cursor, filme_id, 'generos', 'filmes_generos', 'genero_id', solicitacao['generos_texto'])
         _processar_e_linkar_dados(cursor, filme_id, 'diretores', 'filmes_diretores', 'diretor_id', solicitacao['diretores_texto'])
         _processar_e_linkar_dados(cursor, filme_id, 'atores', 'filmes_atores', 'ator_id', solicitacao['atores_texto'])
 
-        # Atualiza o status da solicitação para 'aprovado'
         cursor.execute("UPDATE solicitacoes_adicao SET status = 'aprovado' WHERE id = %s", (solicitacao_id,))
         
-        # Se tudo deu certo, salva as mudanças no banco
         conn.commit()
         send_json_response(handler_instance, 200, {
             "mensagem": "Filme aprovado e publicado com sucesso.",

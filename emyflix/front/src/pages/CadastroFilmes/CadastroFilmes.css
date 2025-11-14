@@ -1,156 +1,46 @@
 .formularioFilme {
-    min-height: 100vh;
-    background-image: url(../../assets/fundo-form-filme.png);
-    background-size: cover;
-    background-position: center;
-    padding: 2rem;
+  min-height: 100vh;
+  background-image: url(../../assets/fundo-form-filme.png);
+  background-size: cover;
+  background-position: center;
+  padding: 2rem;
 }
-
-.formularioContainer {
-    max-width: 900px;
-    margin: 0 auto;
-    padding-top: 2rem;
-}
-
-/* O card branco central */
-.formularioCard {
-    background: white;
-    border-radius: 24px;
-    padding: 2.5rem 3rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-.formularioTitulo {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #21618D;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.formularioForm {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.formularioGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-}
-
-.inputGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.inputGroup label {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #21618D;
-}
-
+.formularioContainer { max-width: 900px; margin: 0 auto; padding-top: 2rem; }
+.formularioCard { background: white; border-radius: 24px; padding: 2.5rem 3rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); }
+.formularioTitulo { font-size: 2.5rem; font-weight: 800; color: #21618D; margin-bottom: 2rem; text-align: center; }
+.formularioForm { display: flex; flex-direction: column; gap: 1.5rem; }
+.formularioGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.inputGroup { display: flex; flex-direction: column; gap: 0.5rem; }
+.inputGroup label { font-size: 1rem; font-weight: 700; color: #21618D; }
 .inputGroup input,
-.inputGroup textarea {
-    padding: 1rem;
-    border: 2px solid #D9ECE3;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-family: inherit;
-    transition: all 0.3s ease;
+.inputGroup textarea,
+.inputGroup select { /* <-- ADICIONADO 'select' */
+  padding: 1rem;
+  border: 2px solid #D9ECE3;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background-color: white; 
 }
-
 .inputGroup input:focus,
-.inputGroup textarea:focus {
-    outline: none;
-    border-color: #369DA1;
-    box-shadow: 0 0 0 3px rgba(54, 157, 161, 0.1);
+.inputGroup textarea:focus,
+.inputGroup select:focus { /* <-- ADICIONADO 'select' */
+  outline: none;
+  border-color: #369DA1;
+  box-shadow: 0 0 0 3px rgba(54, 157, 161, 0.1);
 }
-
-.inputGroup textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-.inputGroup .inputDica {
-    font-size: 0.85rem;
-    color: #555;
-    margin-top: -0.25rem;
-}
-
-.formularioErro {
-    padding: 1rem;
-    background-color: #fee;
-    border: 1px solid #fcc;
-    border-radius: 12px;
-    color: #c33;
-    font-size: 0.95rem;
-    text-align: center;
-}
-
-.formularioBotaoSubmit {
-    padding: 1.25rem;
-    background: linear-gradient(135deg, #369DA1 0%, #21618D 100%);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 1.25rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 1rem;
-}
-
-.formularioBotaoSubmit:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(54, 157, 161, 0.3);
-}
-
-.formularioBotaoSubmit:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.formularioBotaoVoltar {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: white;
-    border: none;
-    border-radius: 12px;
-    color: #21618D;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    width: fit-content;
-}
-
-.formularioBotaoVoltar:hover {
-    transform: translateX(-4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
+.inputGroup textarea { resize: vertical; min-height: 120px; }
+.inputGroup .inputDica { font-size: 0.85rem; color: #555; margin-top: -0.25rem; }
+.formularioErro { padding: 1rem; background-color: #fee; border: 1px solid #fcc; border-radius: 12px; color: #c33; font-size: 0.95rem; text-align: center; }
+.formularioBotaoSubmit { padding: 1.25rem; background: linear-gradient(135deg, #369DA1 0%, #21618D 100%); color: white; border: none; border-radius: 12px; font-size: 1.25rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; margin-top: 1rem; }
+.formularioBotaoSubmit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(54, 157, 161, 0.3); }
+.formularioBotaoSubmit:disabled { opacity: 0.6; cursor: not-allowed; }
+.formularioBotaoVoltar { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: none; border-radius: 12px; color: #21618D; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); width: fit-content; }
+.formularioBotaoVoltar:hover { transform: translateX(-4px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
 @media (max-width: 768px) {
-    .formularioContainer {
-        padding-top: 1rem;
-    }
-
-    .formularioCard {
-        padding: 1.5rem;
-    }
-
-    .formularioTitulo {
-        font-size: 1.75rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .formularioGrid {
-        grid-template-columns: 1fr;
-    }
+  .formularioContainer { padding-top: 1rem; }
+  .formularioCard { padding: 1.5rem; }
+  .formularioTitulo { font-size: 1.75rem; margin-bottom: 1.5rem; }
+  .formularioGrid { grid-template-columns: 1fr; }
 }
