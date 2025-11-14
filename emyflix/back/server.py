@@ -2,19 +2,14 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 import re
-
-# Importa os "Gerentes" (Handlers/Controladores)
 from handlers import auth_handler
 from handlers import filmes_handler
 from handlers import admin_handler   
-
-# Importa as "Ferramentas" (Utils/Auxiliares)
 from utils.auth_seguranca import verify_token
 from utils.respostas import send_json_response, send_error_response
 
 class SimpleAPIHandler(BaseHTTPRequestHandler):
     def _send_cors_headers(self):
-        # Envia os headers CORS necessários para o React/Vite.
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization') 
@@ -25,7 +20,6 @@ class SimpleAPIHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def _get_user_data_from_token(self):
-        # Verifica o header 'Authorization' (o "crachá") e decodifica. Usa a nossa ferramenta de segurança.
         auth_header = self.headers.get('Authorization')
         if not auth_header:
             return None
@@ -35,7 +29,6 @@ class SimpleAPIHandler(BaseHTTPRequestHandler):
             if token_type.lower() != 'bearer':
                 return None
             
-            # CHAMA A FERRAMENTA do auth_seguranca.py
             return verify_token(token)
         except Exception as e:
             print(f"Erro ao validar token: {e}")
@@ -46,14 +39,12 @@ class SimpleAPIHandler(BaseHTTPRequestHandler):
         
         # Rota: /filmes/buscar?...
         if self.path.startswith('/filmes/buscar'):
-            # CHAMA O GERENTE: filmes_handler
             filmes_handler.handle_search_filmes(self) 
             
         # Rota: /filmes/1 (ou qualquer número)
         elif re.match(r'/filmes/(\d+)', self.path):
             try:
                 filme_id = int(re.match(r'/filmes/(\d+)', self.path).group(1))
-                # CHAMA O GERENTE: filmes_handler
                 filmes_handler.handle_get_filme_by_id(self, filme_id) 
             except ValueError:
                 send_error_response(self, 400, "ID do filme inválido.")
@@ -73,6 +64,10 @@ class SimpleAPIHandler(BaseHTTPRequestHandler):
             else:
                 send_error_response(self, 403, "Acesso negado. Rota exclusiva para administradores.")
         
+        elif self.path == '/generos':
+            # É uma rota pública, não precisa de token
+            filmes_handler.handle_get_all_generos(self)
+            
         else:
             send_error_response(self, 404, "Rota não encontrada.")
 

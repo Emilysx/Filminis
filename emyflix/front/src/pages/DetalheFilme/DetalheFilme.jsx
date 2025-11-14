@@ -104,7 +104,7 @@ function DetalheFilme({ filmeId, onNavegar }) {
     );
   }
 
-  if (!filme) return null; // Não deve acontecer, mas é uma segurança
+  if (!filme) return null; 
 
   // --- Renderização da Página Principal ---
   return (
@@ -118,7 +118,6 @@ function DetalheFilme({ filmeId, onNavegar }) {
         </button>
 
         <div className="detalheConteudo">
-          {/* Coluna da Esquerda (Poster) */}
           <div className="detalhePoster">
             {filme.poster_url ? (
               <img src={filme.poster_url} alt={filme.titulo} />

@@ -90,6 +90,33 @@ def handle_get_filme_by_id(handler_instance, filme_id):
         if 'conn' in locals() and conn and conn.is_connected():
             conn.close()
 
+def handle_get_all_generos(handler_instance):
+    """ 
+    Lida com [GET] /generos
+    Busca no banco todos os gêneros disponíveis.
+    """
+    
+    conn = get_db_connection()
+    if not conn:
+        send_error_response(handler_instance, 500, "Erro interno do servidor (DB).")
+        return
+
+    cursor = conn.cursor(dictionary=True)
+    query = "SELECT * FROM generos ORDER BY nome ASC"
+    
+    try:
+        cursor.execute(query)
+        generos = cursor.fetchall()
+        send_json_response(handler_instance, 200, generos)
+        
+    except mysql.connector.Error as err:
+        send_error_response(handler_instance, 500, f"Erro no banco de dados: {err.errno} ({err.sqlstate}): {err.msg}")
+    finally:
+        if 'cursor' in locals() and cursor:
+            cursor.close()
+        if 'conn' in locals() and conn and conn.is_connected():
+            conn.close()
+
 
 def handle_create_filme(handler_instance, user_data):
     body = parse_json_body(handler_instance)

@@ -1,7 +1,6 @@
--- Tabelas principais
--- drop database filminis;
 CREATE DATABASE filminis;
 USE filminis;
+-- Tabelas principais
 
 CREATE TABLE roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -105,9 +104,12 @@ CREATE TABLE filmes_generos (
     FOREIGN KEY (genero_id) REFERENCES generos(id) ON DELETE CASCADE
 );
 
-
 -- Inserts
 INSERT INTO roles (nome) VALUES ('comum'), ('adm');
+
+INSERT INTO usuarios (nome, email, senha, role_id) VALUES
+('user', 'user@gmail.com', '$2b$12$u5EawdCHDFN0RBIummfqV.jdWZB7pLQcjTmijbcK2t4f801BIjLX6', 1),
+('adm', 'adm@gmail.com', '$2b$12$Ptga2K5uDbGMf.lHVNbp0.mARAQCrMZFb5kgtTfQGDxa8sFDnung.', 2);
 
 INSERT INTO linguagens (linguagem) VALUES
 ('Português'),('Inglês'),('Espanhol'),('Francês'),('Alemão'),
@@ -122,7 +124,7 @@ INSERT INTO filmes (id, titulo, ano, sinopse, poster_url, duracao, id_linguagem)
 (1, 'Divertida Mente 2', 2024, 'Novas emoções chegam à mente da adolescente Riley: Ansiedade, Tédio, Inveja e Vergonha, causando um caos na sala de controle.', 'https://p2.trrsf.com/image/fget/cf/940/0/images.terra.com/2024/04/19/1325831308-poster.jpg', '1h 36m', 2),
 (2, 'Super Mario Bros: O Filme', 2023, 'Mario e Luigi, dois encanadores, vão parar no Reino dos Cogumelos, governado pela Princesa Peach, e precisam salvá-lo das garras do temível Bowser.', 'https://cdn.awsli.com.br/800x800/1610/1610163/produto/208807923/poster-super-mario-bros-o-filme-i-f04111d3.jpg', '1h 32m', 7),
 (3, 'Encanto', 2021, 'Na Colômbia, a mágica família Madrigal vive em uma casa encantada. Mirabel é a única sem um dom mágico, mas pode ser a última esperança da família.', 'https://br.web.img3.acsta.net/pictures/21/09/29/18/02/2861381.jpg', '1h 42m', 3),
-(4, 'O Menino e a Garça', 2023, 'Após a morte da mãe, o jovem Mahito se muda para o campo e encontra uma garça falante que o leva a uma torre misteriosa e um mundo fantástico.', 'https://ingresso-a.akamaihd.net/prd/img/movie/o-menino-e-a-garca/654da114-f4e6-4929-aa37-176f44b84bc7.webp', '2h 04m', 7),
+(4, 'Barbie e o Castelo de Diamante', 2008, 'Liana e Alexa saem da sua cabana humilde para vender flores na vila e acabam conhecendo Melody, a guardiã do Castelo de Diamante. As duas decidem ajudá-la a impedir que a chave do castelo seja roubada por Lídia, uma musa egoísta.', 'https://i.pinimg.com/736x/e3/a0/ec/e3a0ec94cdb45d3f7e73728e203567df.jpg', '1h 19m', 2),
 (5, 'Homem-Aranha no Aranhaverso', 2018, 'Miles Morales descobre um multiverso com diferentes Homens-Aranha e precisa se unir a eles para salvar todas as realidades.', 'https://www.sonypictures.com.br/sites/brazil/files/2023-06/1400x2100.jpg', '1h 57m', 1),
 (6, 'Elementos', 2023, 'Na Cidade Elemento, a impetuosa Faísca (fogo) e o tranquilo Gota (água) descobrem que, apesar de opostos, eles têm muito em comum.', 'https://br.web.img3.acsta.net/pictures/22/11/17/20/58/0132283.jpg', '1h 41m', 2),
 (7, 'Soul', 2020, 'Joe, um professor de música, sofre um acidente e sua alma é transportada para o "Pré-Vida". Ele precisa da ajuda da alma 22 para voltar ao seu corpo.', 'https://apostiladecinema.com.br/wp-content/uploads/2021/01/soul-poster-scaled.jpg', '1h 40m', 2),
@@ -144,7 +146,7 @@ INSERT INTO atores (nome) VALUES
 ('Alegria'), ('Ansiedade'), ('Tristeza'), ('Raiva'), ('Mario'), ('Luigi'),
 ('Princesa Peach'), ('Bowser'),
 ('Mirabel Madrigal'), ('Bruno Madrigal'), ('Isabela Madrigal'),
-('Mahito Maki'), ('A Garça'), ('Himi'),
+('Liana '), ('Alexa'), ('Melody'),
 ('Miles Morales'), ('Peter B. Parker'), ('Gwen Stacy'),
 ('Faísca (Ember)'), ('Gota (Wade)'), ('Fagulha (Bernie)'),
 ('Joe Gardner'), ('22'), ('Sr. Bigodes (Gato)'),
@@ -163,7 +165,7 @@ INSERT INTO atores (nome) VALUES
 ('Arlo'), ('Spot');
 
 INSERT INTO diretores (nome) VALUES
-('Kelsey Mann'), ('Aaron Horvath'), ('Byron Howard'), ('Hayao Miyazaki'),
+('Kelsey Mann'), ('Aaron Horvath'), ('Byron Howard'), (' Gino Nichele'),
 ('Peter Ramsey'), ('Peter Sohn'), ('Pete Docter'), ('Domee Shi'),
 ('Lee Unkrich'), ('Chris Buck'), ('Rich Moore'), ('Brad Bird'),
 ('Josh Cooley'), ('Andrew Stanton'), ('Enrico Casarosa'),
@@ -203,7 +205,7 @@ INSERT INTO filmes_generos (filme_id, genero_id) VALUES
 (1, 1), (1, 3), (1, 5), (1, 4),
 (2, 1), (2, 2), (2, 3), (2, 5),
 (3, 1), (3, 5), (3, 6), (3, 4),
-(4, 1), (4, 2), (4, 4), (4, 10),
+(4, 2), (4, 4), (4, 6), (4, 7),
 (5, 1), (5, 2), (5, 11), (5, 5),
 (6, 1), (6, 3), (6, 5), (6, 4),
 (7, 1), (7, 4), (7, 6), (7, 5),

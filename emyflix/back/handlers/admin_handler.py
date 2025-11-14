@@ -6,7 +6,7 @@ from utils.respostas import send_json_response, send_error_response
 import mysql.connector
 
 # Só colunas nesta lista podem ser editadas, para evitar SQL Injection
-EDIT_COLUMNS_WHITELIST = ['titulo', 'ano', 'sinopse', 'poster_url', 'duracao']
+EDIT_COLUMNS_WHITELIST = ['titulo', 'ano', 'sinopse', 'poster_url', 'duracao', 'id_linguagem']
 
 def handle_get_pending_filmes(handler_instance):
     """
@@ -66,7 +66,6 @@ def _processar_e_linkar_dados(cursor, filme_id, tabela_catalogo, tabela_link, co
 
 
 def handle_approve_filme(handler_instance, solicitacao_id):
-    # ... (conexão com o banco) ...
     conn = get_db_connection()
     if not conn:
         send_error_response(handler_instance, 500, "Erro interno do servidor (DB).")

@@ -1,46 +1,205 @@
+/* --- NOVO CSS (Compacto e 2 Colunas) --- */
 .formularioFilme {
   min-height: 100vh;
-  background-image: url(../../assets/fundo-form-filme.png);
-  background-size: cover;
-  background-position: center;
-  padding: 2rem;
+  background-color: #D9ECE3;
 }
-.formularioContainer { max-width: 900px; margin: 0 auto; padding-top: 2rem; }
-.formularioCard { background: white; border-radius: 24px; padding: 2.5rem 3rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); }
-.formularioTitulo { font-size: 2.5rem; font-weight: 800; color: #21618D; margin-bottom: 2rem; text-align: center; }
-.formularioForm { display: flex; flex-direction: column; gap: 1.5rem; }
-.formularioGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-.inputGroup { display: flex; flex-direction: column; gap: 0.5rem; }
-.inputGroup label { font-size: 1rem; font-weight: 700; color: #21618D; }
+
+.formularioContainer {
+  padding-top: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.formularioCard {
+  background: white;
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.formularioTitulo {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #21618D;
+  margin-bottom: 1.5rem; 
+  text-align: center;
+}
+
+.formularioSubtitulo {
+  text-align: center;
+  margin-top: -1.5rem; 
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.formularioForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.formLayoutGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 2rem;
+}
+
+.colunaEsquerda,
+.colunaDireita {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formularioGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputGroup label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #21618D;
+  margin-left: 0.25rem;
+}
+
 .inputGroup input,
 .inputGroup textarea,
-.inputGroup select { /* <-- ADICIONADO 'select' */
-  padding: 1rem;
+.inputGroup select {
+  padding: 0.875rem 1rem;
   border: 2px solid #D9ECE3;
   border-radius: 12px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-family: inherit;
   transition: all 0.3s ease;
-  background-color: white; 
+  background-color: white;
 }
+
 .inputGroup input:focus,
 .inputGroup textarea:focus,
-.inputGroup select:focus { /* <-- ADICIONADO 'select' */
+.inputGroup select:focus {
   outline: none;
   border-color: #369DA1;
   box-shadow: 0 0 0 3px rgba(54, 157, 161, 0.1);
 }
-.inputGroup textarea { resize: vertical; min-height: 120px; }
-.inputGroup .inputDica { font-size: 0.85rem; color: #555; margin-top: -0.25rem; }
-.formularioErro { padding: 1rem; background-color: #fee; border: 1px solid #fcc; border-radius: 12px; color: #c33; font-size: 0.95rem; text-align: center; }
-.formularioBotaoSubmit { padding: 1.25rem; background: linear-gradient(135deg, #369DA1 0%, #21618D 100%); color: white; border: none; border-radius: 12px; font-size: 1.25rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; margin-top: 1rem; }
-.formularioBotaoSubmit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(54, 157, 161, 0.3); }
-.formularioBotaoSubmit:disabled { opacity: 0.6; cursor: not-allowed; }
-.formularioBotaoVoltar { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: none; border-radius: 12px; color: #21618D; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); width: fit-content; }
-.formularioBotaoVoltar:hover { transform: translateX(-4px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
-@media (max-width: 768px) {
-  .formularioContainer { padding-top: 1rem; }
-  .formularioCard { padding: 1.5rem; }
-  .formularioTitulo { font-size: 1.75rem; margin-bottom: 1.5rem; }
-  .formularioGrid { grid-template-columns: 1fr; }
+
+.inputGroup textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.inputGroup .inputDica {
+  font-size: 0.8rem;
+  color: #555;
+  margin-top: -0.25rem;
+  margin-left: 0.25rem;
+}
+
+.checkboxGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem 0.5rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  /* Compacto */
+  color: #17434F;
+  cursor: pointer;
+}
+
+.checkboxLabel input {
+  width: 1.15em;
+  height: 1.15em;
+  accent-color: #21618D;
+}
+
+.formularioErro {
+  padding: 0.875rem;
+  border-radius: 10px;
+  background-color: #fee;
+  border: 1px solid #fcc;
+  color: #c33;
+  font-size: 0.95rem;
+  text-align: center;
+  grid-column: 1 / -1;
+  margin-top: 1rem;
+}
+
+.formularioBotaoSubmit {
+  padding: 1.15rem;
+  font-size: 1.15rem;
+  margin-top: 1.5rem;
+  background: linear-gradient(135deg, #369DA1 0%, #21618D 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.formularioBotaoSubmit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(54, 157, 161, 0.3);
+}
+
+.formularioBotaoSubmit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.formularioBotaoVoltar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  color: #21618D;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+}
+
+.formularioBotaoVoltar:hover {
+  transform: translateX(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+  .formLayoutGrid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem 0;
+  }
+
+  .formularioCard {
+    padding: 2rem 1.5rem;
+  }
+
+  .formularioTitulo {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .checkboxGrid { 
+    grid-template-columns: 1fr 1fr;
+  }
 }
