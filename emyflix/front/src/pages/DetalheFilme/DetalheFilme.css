@@ -156,6 +156,21 @@
     margin-bottom: 10px;
 }
 
+.detalheGridInfo {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 2.5rem;
+  margin-top: 0.1rem; 
+}
+
+.detalheColunaInfo .detalheSecao {
+  margin-bottom: 1.5rem; 
+}
+
+.detalheColunaInfo .detalheSecao:last-child {
+  margin-bottom: 0;
+}
+
 .detalheSecaoTitulo {
     margin-top: 8px;
     margin-bottom: 10px;

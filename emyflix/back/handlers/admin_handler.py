@@ -156,6 +156,80 @@ def handle_delete_filme(handler_instance, filme_id):
         if 'conn' in locals() and conn and conn.is_connected():
             conn.close()
 
+def handle_reject_submission(handler_instance, solicitacao_id):
+    """
+    Lida com [PUT] /admin/rejeitar/<id>
+    Rejeita (muda o status) de uma solicitação de ADIÇÃO de filme.
+    """
+    
+    conn = get_db_connection()
+    if not conn:
+        send_error_response(handler_instance, 500, "Erro interno do servidor (DB).")
+        return
+
+    cursor = conn.cursor()
+    
+    try:
+        # Em vez de deletar, mudamos o status para 'rejeitado'
+        # Isso nos permite manter um histórico do que foi rejeitado
+        query = "UPDATE solicitacoes_adicao SET status = 'rejeitado' WHERE id = %s AND status = 'pendente'"
+        cursor.execute(query, (solicitacao_id,))
+        
+        if cursor.rowcount == 0:
+            send_error_response(handler_instance, 404, "Solicitação não encontrada ou já processada.")
+        else:
+            conn.commit() 
+            send_json_response(handler_instance, 200, {
+                "mensagem": "Solicitação rejeitada com sucesso."
+            })
+        
+    except mysql.connector.Error as err:
+        conn.rollback() 
+        send_error_response(handler_instance, 500, f"Erro no banco de dados: {err}")
+    finally:
+        if 'cursor' in locals() and cursor:
+            cursor.close()
+        if 'conn' in locals() and conn and conn.is_connected():
+            conn.close()
+
+def handle_get_solicitacao_by_id(handler_instance, solicitacao_id):
+    """
+    Lida com [GET] /admin/solicitacao/<id>
+    Busca os detalhes de UMA ÚNICA solicitação pendente.
+    """
+    
+    conn = get_db_connection()
+    if not conn:
+        send_error_response(handler_instance, 500, "Erro interno do servidor (DB).")
+        return
+
+    cursor = conn.cursor(dictionary=True)
+    
+    # Faz um JOIN para pegar o nome do usuário que enviou
+    query = """
+        SELECT s.*, u.nome AS usuario_nome
+        FROM solicitacoes_adicao s
+        JOIN usuarios u ON s.solicitado_por_id = u.id
+        WHERE s.id = %s
+    """
+    
+    try:
+        cursor.execute(query, (solicitacao_id,))
+        solicitacao = cursor.fetchone()
+        
+        if not solicitacao:
+            send_error_response(handler_instance, 404, "Solicitação não encontrada.")
+        else:
+            send_json_response(handler_instance, 200, solicitacao)
+            
+    except mysql.connector.Error as err:
+        send_error_response(handler_instance, 500, f"Erro no banco de dados: {err}")
+    finally:
+        if 'cursor' in locals() and cursor:
+            cursor.close()
+        if 'conn' in locals() and conn and conn.is_connected():
+            conn.close()
+
 
 def handle_approve_edit(handler_instance, solicitacao_id):
     """

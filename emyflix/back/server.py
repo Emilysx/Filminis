@@ -64,6 +64,17 @@ class SimpleAPIHandler(BaseHTTPRequestHandler):
             else:
                 send_error_response(self, 403, "Acesso negado. Rota exclusiva para administradores.")
         
+        elif re.match(r'/admin/solicitacao/(\d+)', self.path):
+            user_data = self._get_user_data_from_token()
+            if user_data and user_data['role'] == 'adm':
+                try:
+                    solicitacao_id = int(re.match(r'/admin/solicitacao/(\d+)', self.path).group(1))
+                    admin_handler.handle_get_solicitacao_by_id(self, solicitacao_id)
+                except ValueError:
+                    send_error_response(self, 400, "ID da solicitação inválido.")
+            else:
+                send_error_response(self, 403, "Acesso negado.")
+        
         elif self.path == '/generos':
             # É uma rota pública, não precisa de token
             filmes_handler.handle_get_all_generos(self)
@@ -96,6 +107,7 @@ class SimpleAPIHandler(BaseHTTPRequestHandler):
     # Roteador PUT (para aprovações e edições)
     def do_PUT(self):
         # Tenta "casar" com as várias rotas de admin
+        match_reject_add = re.match(r'/admin/rejeitar/(\d+)', self.path)
         match_approve_add = re.match(r'/admin/aprovar/(\d+)', self.path)
         match_approve_edit = re.match(r'/admin/aprovar-edicao/(\d+)', self.path) 
         match_reject_edit = re.match(r'/admin/rejeitar-edicao/(\d+)', self.path) 

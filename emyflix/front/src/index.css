@@ -13,3 +13,37 @@ body {
   background-color: var(--cor-fundo);
   color: var(--cor-escura);
 }
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingScreen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #D9ECE3; 
+}
+
+.loadingScreenContent {
+  text-align: center;
+}
+
+.loadingSpinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(54, 157, 161, 0.2);
+  border-top-color: #369DA1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loadingText {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #21618D;
+  margin-top: 1rem;
+}

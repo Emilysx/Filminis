@@ -1,44 +1,52 @@
 import { useState } from 'react';
 import { useAuth } from './contexts/AuthContext';
+import Intro from './components/Intro/Intro';
 import Login from './pages/Login/Login';
 import Cadastro from './pages/Cadastro/Cadastro';
-import Intro from './components/Intro/Intro';
 import Home from './pages/Home/Home';
-import Footer from './components/Footer/Footer';
 import DetalheFilme from './pages/DetalheFilme/DetalheFilme';
+import CadastroFilmes from './pages/CadastroFilmes/CadastroFilmes'; 
+import PainelAdmin from './pages/PainelAdmin/PainelAdmin';
+import DetalheAprovacao from './pages/DetalheAprovacao/DetalheAprovacao';
 
-// 1. IMPORTA O NOVO NOME (com o caminho novo)
-import CadastroFilmes from './pages/CadastroFilmes/CadastroFilmes';
 
-// (PainelAdmin vem depois)
-// import PainelAdmin from './pages/PainelAdmin/PainelAdmin';
-
-// ... (Componente LoadingScreen fica aqui, sem mudanças) ...
-function LoadingScreen() { /* ...código... */ }
+function LoadingScreen() {
+  return (
+    <div className="loadingScreen">
+      <div className="loadingScreenContent">
+        <div className="loadingSpinner" />
+        <p className="loadingText">
+          Carregando EmyFlix...
+        </p>
+      </div>
+    </div>
+  );
+}
 
 function AppContent() {
+
   const { user, loading } = useAuth();
-  const [rota, setRota] = useState('intro');
+  const [rota, setRota] = useState('intro'); 
   const [params, setParams] = useState({});
 
   const navegar = (novaRota, novosParams = {}) => {
     setRota(novaRota);
     setParams(novosParams);
+    window.scrollTo(0, 0); 
   };
 
   const handleIntroComplete = () => {
     if (user) {
-      setRota('home');
+      setRota('home'); // Se já tem usuário, vai pra Home
     } else {
-      setRota('login');
+      setRota('login'); // Se não, vai pro Login
     }
   };
 
   if (loading) {
     return <LoadingScreen />;
   }
-  
-  // --- FLUXO DE NÃO-LOGADO ---
+
   if (!user) {
     if (rota === 'intro') {
       return <Intro onComplete={handleIntroComplete} />;
@@ -46,31 +54,40 @@ function AppContent() {
     if (rota === 'cadastro') {
       return <Cadastro onNavigate={navegar} />;
     }
+    // Rota Padrão (Login)
     return <Login onNavigate={navegar} />;
   }
 
-  // --- FLUXO DE LOGADO ---
-  
+
+  // Rota de Detalhe do Filme
   if (rota === 'filme' && params.id) {
     return <DetalheFilme filmeId={params.id} onNavegar={navegar} />;
   }
 
-  // 2. USA O NOVO COMPONENTE
+  // Rota de Adicionar Filme
   if (rota === 'adicionar') {
     return <CadastroFilmes onNavegar={navegar} />;
   }
+  
+  // Rota de Edição (que adiamos, mas já podemos deixar)
+  if (rota === 'editar' && params.id) {
+    return <CadastroFilmes filmeId={params.id} onNavegar={navegar} />;
+  }
 
-  // (Vamos descomentar isso nos próximos passos)
-  // if (rota === 'editar' && params.id) {
-  //   return <CadastroFilmes filmeId={params.id} onNavegar={navegar} />;
-  // }
-  // if (rota === 'admin') {
-  //   return <PainelAdmin onNavegar={navegar} />;
-  // }
+  // Rota do Painel Admin (só para admins)
+  if (rota === 'admin' && user.role === 'adm') {
+    return <PainelAdmin onNavegar={navegar} />;
+  }
+  
+  if (rota === 'detalhe-aprovacao' && params.id && user.role === 'adm') {
+    return <DetalheAprovacao solicitacaoId={params.id} onNavegar={navegar} />;
+  }
 
-  // A rota padrão é a 'home'
+  // Rota Padrão (Home)
   return <Home onNavegar={navegar} />;
+
 }
+
 
 function App() {
   return (
@@ -79,12 +96,5 @@ function App() {
     </>
   );
 }
-
-// CSS da animação (pode manter)
-const styleSheet = document.createElement("style");
-styleSheet.type = "text/css";
-styleSheet.innerText = "@keyframes spin { to { transform: rotate(360deg); } }";
-document.head.appendChild(styleSheet);
-
 
 export default App;

@@ -119,59 +119,6 @@ def handle_get_all_generos(handler_instance):
 
 
 def handle_create_filme(handler_instance, user_data):
-    body = parse_json_body(handler_instance)
-    if not body:
-        send_error_response(handler_instance, 400, "Corpo da requisição inválido ou vazio.")
-        return
-
-    # Validação (sem mudança)
-    titulo = body.get('titulo')
-    sinopse = body.get('sinopse')
-    poster_url = body.get('poster_url')
-    if not titulo or not sinopse or not poster_url:
-        send_error_response(handler_instance, 400, "Campos 'titulo', 'sinopse' e 'poster_url' são obrigatórios.")
-        return
-
-    solicitado_por_id = user_data['user_id']
-    conn = get_db_connection()
-    if not conn:
-        send_error_response(handler_instance, 500, "Erro interno do servidor (DB).")
-        return
-    cursor = conn.cursor()
-    
-    query = """
-        INSERT INTO solicitacoes_adicao 
-        (titulo, ano, sinopse, poster_url, duracao, 
-         generos_texto, diretores_texto, atores_texto, 
-         solicitado_por_id, id_linguagem, status) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    """
-    
-    dados_para_inserir = (
-        titulo, body.get('ano'), sinopse, poster_url, 
-        body.get('duracao'), 
-        body.get('generos_texto'), body.get('diretores_texto'), body.get('atores_texto'),
-        solicitado_por_id,
-        body.get('id_linguagem'),
-        'pendente'
-    )
-    
-    try:
-        cursor.execute(query, dados_para_inserir)
-        conn.commit()
-        send_json_response(handler_instance, 201, {
-            "mensagem": "Filme enviado para aprovação com sucesso."
-        })
-    except mysql.connector.Error as err:
-        send_error_response(handler_instance, 500, f"Erro no banco de dados: {err.errno} ({err.sqlstate}): {err.msg}")
-    finally:
-        if 'cursor' in locals() and cursor:
-            cursor.close()
-        if 'conn' in locals() and conn and conn.is_connected():
-            conn.close()
-
-
-def handle_create_filme(handler_instance, user_data):
     """ 
     Lida com [POST] /filmes - Adição de um novo filme.
     Cria uma solicitação pendente na tabela 'solicitacoes_adicao'.
@@ -182,12 +129,22 @@ def handle_create_filme(handler_instance, user_data):
         send_error_response(handler_instance, 400, "Corpo da requisição inválido ou vazio.")
         return
 
-    # Validação de campos básicos
+    # Pega todos os compos do body
     titulo = body.get('titulo')
-    sinopse = body.get('sinopse')
+    ano = body.get('ano')
+    duracao = body.get('duracao')
     poster_url = body.get('poster_url')
-    if not titulo or not sinopse or not poster_url:
-        send_error_response(handler_instance, 400, "Campos 'titulo', 'sinopse' e 'poster_url' são obrigatórios.")
+    sinopse = body.get('sinopse')
+    id_linguagem = body.get('id_linguagem')
+    generos_texto = body.get('generos_texto')
+    
+    # Campos opcionais
+    diretores_texto = body.get('diretores_texto')
+    atores_texto = body.get('atores_texto')
+
+    # Verifica todos os campos que são obrigatórios no front-end
+    if not all([titulo, ano, duracao, poster_url, sinopse, id_linguagem, generos_texto]):
+        send_error_response(handler_instance, 400, "Todos os campos obrigatórios (*) devem ser preenchidos.")
         return
 
     # Pega o ID do usuário de dentro do "crachá" (Token)
@@ -200,23 +157,23 @@ def handle_create_filme(handler_instance, user_data):
 
     cursor = conn.cursor()
     
-    # Query ATUALIZADA para incluir 'duracao'
     query = """
         INSERT INTO solicitacoes_adicao 
         (titulo, ano, sinopse, poster_url, duracao, 
          generos_texto, diretores_texto, atores_texto, 
-         solicitado_por_id, status) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+         solicitado_por_id, id_linguagem, status) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     
     dados_para_inserir = (
-        titulo, body.get('ano'), sinopse, poster_url, 
-        body.get('duracao'), # <-- CAMPO NOVO (sua ideia)
-        body.get('generos_texto'), 
-        body.get('diretores_texto'), 
-        body.get('atores_texto'), # (Personagens)
+        titulo, ano, sinopse, poster_url, 
+        duracao,
+        generos_texto, 
+        diretores_texto, 
+        atores_texto,
         solicitado_por_id,
-        'pendente' # O filme sempre começa como 'pendente'
+        id_linguagem,
+        'pendente'
     )
     
     try:
@@ -227,7 +184,11 @@ def handle_create_filme(handler_instance, user_data):
         })
         
     except mysql.connector.Error as err:
-        send_error_response(handler_instance, 500, f"Erro no banco de dados: {err.errno} ({err.sqlstate}): {err.msg}")
+        # Adiciona uma checagem específica para o erro que você teve
+        if err.errno == 1364:
+            send_error_response(handler_instance, 400, f"Erro de campo obrigatório no banco: {err.msg}")
+        else:
+            send_error_response(handler_instance, 500, f"Erro no banco de dados: {err.errno} ({err.sqlstate}): {err.msg}")
     finally:
         if 'cursor' in locals() and cursor:
             cursor.close()
