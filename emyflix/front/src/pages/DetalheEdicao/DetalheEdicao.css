@@ -1,0 +1,216 @@
+/* Este CSS é uma CÓPIA do DetalheFilme.css, com adições */
+
+.detalheEdicao {
+  min-height: 100vh;
+  background-color: #D9ECE3;
+}
+.detalheEdicaoContainer {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+.detalheEdicaoCarregando {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  background-color: #D9ECE3;
+}
+.detalheEdicaoSpinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(54, 157, 161, 0.2);
+  border-top-color: #369DA1;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* --- ADIÇÃO: Estilos da página de Detalhes de APROVAÇÃO --- */
+/* (Reutiliza o CSS do DetalheFilme que você já tem) */
+
+.detalheConteudo {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 5px;
+    background: white;
+    border-radius: 24px;
+    padding: 1rem;
+    padding-top: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+.detalhePoster {
+    width: 295px;
+    height: 400px; 
+    aspect-ratio: 2/3;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    margin: 0 auto;
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
+}
+.detalhePoster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.detalheInfo {
+    display: flex;
+    flex-direction: column;
+}
+.detalheTitulo {
+    margin-top: 0%;
+    font-size: 2.30rem;
+    font-weight: 800;
+    color: #21618D;
+    line-height: 1.2;
+    margin-bottom: 10px;
+}
+.detalheMetadata {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 10px;
+}
+.detalheAno {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #17434F;
+}
+.detalheDuracao {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #17434F;
+    padding-left: 0.75rem;
+    border-left: 2px solid #EAEAEA;
+}
+.detalheCategorias {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.detalheCategoria {
+    padding: 0.4rem 1rem;
+    background: #EAEAEA;
+    color: #333;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+.detalheSecao {
+    margin-bottom: 10px;
+}
+.detalheGridInfo {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 2.5rem;
+  margin-top: 0.1rem; 
+}
+.detalheColunaInfo .detalheSecao {
+  margin-bottom: 1.5rem; 
+}
+.detalheColunaInfo .detalheSecao:last-child {
+  margin-bottom: 0;
+}
+.detalheSecaoTitulo {
+    margin-top: 8px;
+    margin-bottom: 10px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #21618D;
+}
+.detalheSinopse {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #17434F;
+    margin-bottom: 5px;
+}
+.detalheLista {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #17434F;
+    opacity: 0.9;
+}
+/* --- FIM DOS ESTILOS REUTILIZADOS --- */
+
+
+/* --- SEÇÃO DE MUDANÇAS (De/Para) --- */
+.secaoMudancas {
+  margin-top: 1rem;
+  border-top: 1px solid #EAEAEA;
+  padding-top: 1rem;
+}
+
+/* --- CLASSE NOVA (que substitui o style={{...}}) --- */
+.tituloMudanca {
+  color: #c73e5e !important; 
+  border-bottom: 2px solid #c73e5e;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem !important; 
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mudancaBox {
+  background: #D9ECE3; 
+  border: 1px solid #D9ECE3;
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 colunas */
+  gap: 1.5rem;
+}
+
+.mudancaCampo h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #21618D;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #D9ECE3;
+}
+
+.mudancaValor {
+  font-size: 0.95rem;
+  color: #17434F;
+  line-height: 1.6;
+  white-space: pre-wrap; /* Mantém a quebra de linha da sinopse */
+  word-wrap: break-word; /* Quebra palavras longas */
+  max-height: 150px; /* Limita a altura */
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+/* Linha divisória vertical */
+.mudancaCampo.de {
+  padding-right: 1.5rem;
+  border-right: 2px solid #D9ECE3;
+}
+.mudancaCampo.de .mudancaValor {
+  color: #c33; 
+  text-decoration: line-through;
+  background: #fff0f0;
+  border-radius: 8px;
+}
+
+.mudancaCampo.para .mudancaValor {
+  color: #369DA1; /* Verde para "Para" */
+  font-weight: 600;
+  background: #f0fdfa;
+  border-radius: 8px;
+}
+
+
+/* Botões de Aprovar/Rejeitar */
+.detalheAcoesAprovacao {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid #EAEAEA;
+  padding-top: 1.5rem;
+}
+/* (Reutiliza .adminBotao... do PainelAdmin.css) */

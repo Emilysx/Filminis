@@ -166,7 +166,7 @@
 }
 
 .adminBotaoAprovar {
-  background: #72B488;
+  background: #237f42;
   color: white;
 }
 .adminBotaoAprovar:hover:not(:disabled) {
@@ -175,7 +175,7 @@
 }
 
 .adminBotaoRejeitar {
-  background: #F498AE;
+  background: #a1272d;
   color: white;
 }
 .adminBotaoRejeitar:hover:not(:disabled) {

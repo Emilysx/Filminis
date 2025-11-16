@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Check, X } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import Navbar from '../../components/Navbar/Navbar';
-import FilmeCarrossel from '../../components/FilmeCarrossel/FilmeCarrossel'; 
-import CardFilme from '../../components/CardFilme/CardFilme';
+import FilmeCarrossel from '../../components/FilmeCarrossel/FilmeCarrossel';
 import './PainelAdmin.css';
+import Footer from '../../components/Footer/Footer';
 
 function PainelAdmin({ onNavegar }) {
   const { user, token } = useAuth();
   const [filmesAprovacao, setFilmesAprovacao] = useState([]);
+  const [edicoesAprovacao, setEdicoesAprovacao] = useState([]);
   const [carregando, setCarregando] = useState(true);
+  const [processando, setProcessando] = useState(null); // ID do item sendo processado
 
   useEffect(() => {
     if (!user || user.role !== 'adm') {
@@ -22,13 +24,20 @@ function PainelAdmin({ onNavegar }) {
   const carregarDados = async () => {
     setCarregando(true);
     try {
-      const response = await fetch('http://localhost:8000/admin/solicitacoes', {
+      // Busca Novas Submissões
+      const resFilmes = await fetch('http://localhost:8000/admin/solicitacoes', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      if (!response.ok) throw new Error('Falha ao buscar solicitações');
-      
-      const data = await response.json();
-      setFilmesAprovacao(data);
+      const dataFilmes = await resFilmes.json();
+      if (resFilmes.ok) setFilmesAprovacao(dataFilmes);
+
+      // Busca Edições Pendentes (com poster_url e ano)
+      const resEdicoes = await fetch('http://localhost:8000/admin/solicitacoes-edicao', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const dataEdicoes = await resEdicoes.json();
+      if (resEdicoes.ok) setEdicoesAprovacao(dataEdicoes);
+
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
     } finally {
@@ -36,10 +45,35 @@ function PainelAdmin({ onNavegar }) {
     }
   };
 
-  // 3. NOVA FUNÇÃO DE NAVEGAÇÃO
-  // Manda o admin para a página de detalhes da solicitação
-  const handleVerDetalhe = (solicitacaoId) => {
-    onNavegar('detalhe-aprovacao', { id: solicitacaoId });
+  // Funções de aprovar/rejeitar NOVOS filmes
+  const aprovarFilme = async (solicitacaoId) => {
+    setProcessando(solicitacaoId);
+    try {
+      await fetch(`http://localhost:8000/admin/aprovar/${solicitacaoId}`, {
+        method: 'PUT', headers: { 'Authorization': `Bearer ${token}` }
+      });
+      alert('Filme aprovado!');
+      await carregarDados(); 
+    } catch (error) {
+      alert('Erro ao aprovar filme');
+    } finally {
+      setProcessando(null);
+    }
+  };
+  const rejeitarFilme = async (solicitacaoId) => {
+    if (!window.confirm('Tem certeza que deseja rejeitar esta submissão?')) return;
+    setProcessando(solicitacaoId);
+    try {
+      await fetch(`http://localhost:8000/admin/rejeitar/${solicitacaoId}`, {
+        method: 'PUT', headers: { 'Authorization': `Bearer ${token}` }
+      });
+      alert('Solicitação rejeitada.');
+      await carregarDados();
+    } catch (error) {
+      alert('Erro ao rejeitar filme');
+    } finally {
+      setProcessando(null);
+    }
   };
 
 
@@ -55,35 +89,57 @@ function PainelAdmin({ onNavegar }) {
   return (
     <div className="admin">
       <Navbar onNavegar={onNavegar} />
-
       <div className="adminContainer">
         <button className="adminBotaoVoltar" onClick={() => onNavegar('home')}>
           <ArrowLeft size={20} />
           <span>Voltar</span>
         </button>
-
         <h1 className="adminTitulo">Painel do Administrador</h1>
 
+        {/* --- Seção de NOVOS Filmes (com Carrossel) --- */}
         <section className="adminSecao">
           <h2 className="adminSecaoTitulo">
-            Filmes Aguardando Aprovação ({filmesAprovacao.length})
+            Novos Filmes ({filmesAprovacao.length})
           </h2>
-
           {filmesAprovacao.length === 0 ? (
-            <p className="adminVazio">Nenhum filme aguardando aprovação</p>
+            <p className="adminVazio">Nenhum filme novo</p>
           ) : (
-            // 4. SUBSTITUI O .adminGrid PELO NOVO CARROSSEL
             <FilmeCarrossel
-              titulo="" // Não precisamos de título aqui
-              filmes={filmesAprovacao}
-              onFilmeClick={handleVerDetalhe} // Chama a nova função
+              titulo=""
+              filmes={filmesAprovacao} 
+              onFilmeClick={(id) => onNavegar('detalhe-aprovacao', { id })}
             />
           )}
         </section>
 
-        {/* (Aqui virá a seção de 'Solicitações de Edição') */}
-        
+        {/* --- Seção de EDIÇÕES Pendentes (com Carrossel) --- */}
+        <section className="adminSecao">
+          <h2 className="adminSecaoTitulo">
+            Edições Pendentes ({edicoesAprovacao.length})
+          </h2>
+          {edicoesAprovacao.length === 0 ? (
+            <p className="adminVazio">Nenhuma edição pendente</p>
+          ) : (
+            <FilmeCarrossel
+              titulo=""
+              filmes={edicoesAprovacao.map(solic => ({
+                id: solic.id, 
+                titulo: solic.filme_titulo,
+                poster_url: solic.poster_url, 
+                ano: solic.ano,
+                generos: [`Campo: ${solic.campo_alterado}`, `Por: ${solic.usuario_nome}`]
+              }))}
+              // --- AQUI ESTÁ A CORREÇÃO ---
+              onFilmeClick={(id) => {
+                // Encontra a solicitação completa para enviar
+                const solicitacaoCompleta = edicoesAprovacao.find(s => s.id === id);
+                onNavegar('detalhe-edicao', { solicitacao: solicitacaoCompleta });
+              }}
+            />
+          )}
+        </section>
       </div>
+      <Footer />
     </div>
   );
 }

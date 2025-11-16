@@ -1,26 +1,24 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-
 import Navbar from '../../components/Navbar/Navbar';
 import Carrossel from '../../components/Carrossel/Carrossel';
 import FilmeCarrossel from '../../components/FilmeCarrossel/FilmeCarrossel';
-import bannerHome from '../../assets/banner-home.png';
 import Footer from '../../components/Footer/Footer';
 import './Home.css';
 
-const IDS_DESTAQUE_CARROSSEL = [1, 5, 11, 9, 6];
-
+// IDs dos filmes que você quer no carrossel principal
+const IDS_DESTAQUE_CARROSSEL = [1, 5, 9, 3, 2];
 
 function Home({ onNavegar }) {
   const { token } = useAuth();
-  
+
   const [filmesRecentes, setFilmesRecentes] = useState([]);
   const [filmesDestaque, setFilmesDestaque] = useState([]);
-  const [filmesVistos, setFilmesVistos] = useState([]); 
-  
+  const [filmesVistos, setFilmesVistos] = useState([]); // <-- NOVO ESTADO
+
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
-  
+
   useEffect(() => {
     const carregarDados = async () => {
       try {
@@ -29,17 +27,28 @@ function Home({ onNavegar }) {
           method: 'GET',
           headers: { 'Authorization': `Bearer ${token}` }
         });
-
         if (!response.ok) throw new Error('Falha ao buscar filmes.');
-
         const filmesData = await response.json(); // Pega TODOS os filmes
-        
+
+        // Lógica dos Destaques (sem mudança)
         const filmesParaDestaque = IDS_DESTAQUE_CARROSSEL
           .map(id => filmesData.find(filme => filme.id === id))
           .filter(Boolean);
-        
         setFilmesDestaque(filmesParaDestaque);
-        setFilmesRecentes(filmesData); 
+
+        // Lógica dos Recentes (back-end já ordena por ID DESC)
+        setFilmesRecentes(filmesData);
+
+        // --- NOVA LÓGICA DO HISTÓRICO ---
+        const historicoIds = JSON.parse(localStorage.getItem('historico_filmes')) || [];
+        if (historicoIds.length > 0) {
+          // Filtra a lista completa de filmes para encontrar os do histórico
+          const filmesDoHistorico = historicoIds
+            .map(id => filmesData.find(filme => filme.id === id))
+            .filter(Boolean); // Remove filmes que possam ter sido deletados
+          setFilmesVistos(filmesDoHistorico);
+        }
+        // --- FIM DA LÓGICA DO HISTÓRICO ---
 
       } catch (err) {
         setErro(err.message);
@@ -51,47 +60,49 @@ function Home({ onNavegar }) {
   }, [token]);
 
   const handleBuscar = (termo) => {
-    console.log('Buscando por:', termo);
+    // Ação 3: Manda para a página de Listar Filmes com o termo
+    onNavegar('listar-filmes', { busca: termo });
   };
 
   const handleVerFilme = (filmeId) => {
-    onNavegar('filme', { id: filmeId }); 
+    onNavegar('filme', { id: filmeId });
   };
 
-  if (carregando) {
-    return (
-      <div className="homeCarregando">
-        <div className="homeSpinner" />
-        <p>Carregando filmes...</p>
-      </div>
-    );
-  }
-  
-  if (erro) {
-     return <div className="homeCarregando"><p>Erro: {erro}</p></div>;
-  }
+  if (carregando) { /* ... (tela de loading) ... */ }
+  if (erro) { /* ... (tela de erro) ... */ }
 
   return (
     <div className="home">
+      {/* Navbar agora usa a nova handleBuscar */}
       <Navbar onBuscar={handleBuscar} onNavegar={onNavegar} />
-      
+
       <main className="homeContainer">
-        
-        <Carrossel 
-          filmes={filmesDestaque} 
-          onFilmeClick={handleVerFilme} 
+
+        <Carrossel
+          filmes={filmesDestaque}
+          onFilmeClick={handleVerFilme}
         />
 
-        <FilmeCarrossel 
+        <FilmeCarrossel
           titulo="Cadastrados Recentemente"
-          filmes={filmesRecentes} 
-          onFilmeClick={handleVerFilme} 
+          filmes={filmesRecentes}
+          onFilmeClick={handleVerFilme}
         />
+
+        {/* --- NOVO CARROSSEL DE HISTÓRICO --- */}
+        {/* Só aparece se o usuário já viu algum filme */}
+        {filmesVistos.length > 0 && (
+          <FilmeCarrossel
+            titulo="Visto Recentemente"
+            filmes={filmesVistos}
+            onFilmeClick={handleVerFilme}
+          />
+        )}
+
       </main>
-      {/* Footer */}
       <Footer />
     </div>
   );
 }
 
-export default Home;
+export default Home;  

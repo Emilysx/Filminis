@@ -1,170 +1,171 @@
+/* --- O SEU CSS COMPACTO (BASE) --- */
 .detalhe {
-    min-height: 100vh;
-    background-color: #D9ECE3;
+  min-height: 100vh;
+  background-color: #D9ECE3;
 }
 
 .detalheContainer {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
 .detalheCarregando,
 .detalheErro {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    background-color: #D9ECE3;
-    color: #c33;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  background-color: #D9ECE3;
+  color: #c33;
 }
 
 .detalheSpinner {
-    width: 60px;
-    height: 60px;
-    border: 4px solid rgba(54, 157, 161, 0.2);
-    border-top-color: #369DA1;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(54, 157, 161, 0.2);
+  border-top-color: #369DA1;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
 .detalheBotaoVoltar {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: white;
-    border: none;
-    border-radius: 12px;
-    color: #21618D;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  color: #21618D;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .detalheBotaoVoltar:hover {
-    transform: translateX(-4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateX(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .detalheConteudo {
-    display: grid;
-    grid-template-columns: 350px 1fr;
-    gap:5px;
-    background: white;
-    border-radius: 24px;
-    padding: 1rem;
-    padding-top: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 5px;
+  background: white;
+  border-radius: 24px;
+  padding: 1rem;
+  padding-top: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .detalhePoster {
-    width: 295px;
-    height: 400px; 
-    aspect-ratio: 2/3;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    margin: 0 auto;
-    margin-top: 0.8rem;
-    margin-bottom: 0.8rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    justify-items: center;
+  width: 295px;
+  height: 400px;
+  aspect-ratio: 2/3;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  margin: 0 auto;
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
 }
 
 .detalhePoster img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .detalhePlaceholder {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #369DA1 0%, #21618D 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #369DA1 0%, #21618D 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .detalhePlaceholder span {
-    font-size: 6rem;
-    font-weight: 800;
-    color: white;
-    text-transform: uppercase;
+  font-size: 6rem;
+  font-weight: 800;
+  color: white;
+  text-transform: uppercase;
 }
 
 .detalheInfo {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .detalheTitulo {
-    margin-top: 0%;
-    font-size: 2.30rem;
-    font-weight: 800;
-    color: #21618D;
-    line-height: 1.2;
-    margin-bottom: 10px;
+  margin-top: 0%;
+  font-size: 2.30rem;
+  font-weight: 800;
+  color: #21618D;
+  line-height: 1.2;
+  margin-bottom: 10px;
 }
 
 .detalheMetadata {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 10px;
 }
 
 .detalheAno {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #17434F;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #17434F;
 }
 
 .detalheDuracao {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #17434F;
-    padding-left: 0.75rem;
-    border-left: 2px solid #EAEAEA;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #17434F;
+  padding-left: 0.75rem;
+  border-left: 2px solid #EAEAEA;
 }
 
 .detalheCategorias {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .detalheCategoria {
-    padding: 0.4rem 1rem;
-    background: #EAEAEA;
-    color: #333;
-    border-radius: 16px;
-    font-size: 0.9rem;
-    font-weight: 600;
+  padding: 0.4rem 1rem;
+  background: #EAEAEA;
+  color: #333;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .detalheSecao {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .detalheGridInfo {
   display: grid;
-  grid-template-columns: 1fr 1fr; 
+  grid-template-columns: 1fr 1fr;
   gap: 2.5rem;
-  margin-top: 0.1rem; 
+  margin-top: 0.1rem;
 }
 
 .detalheColunaInfo .detalheSecao {
-  margin-bottom: 1.5rem; 
+  margin-bottom: 1.5rem;
 }
 
 .detalheColunaInfo .detalheSecao:last-child {
@@ -172,213 +173,281 @@
 }
 
 .detalheSecaoTitulo {
-    margin-top: 8px;
-    margin-bottom: 10px;
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #21618D;
+  margin-top: 8px;
+  margin-bottom: 10px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #21618D;
 }
 
 .detalheSinopse {
-    font-size: 1rem;
-    line-height: 1.7;
-    color: #17434F;
-    margin-bottom: 5px;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #17434F;
+  margin-bottom: 5px;
 }
 
 .detalheLista {
-    margin-top: 0%;
-    margin-bottom: 5px;
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #17434F;
-    opacity: 0.9;
+  margin-top: 0%;
+  margin-bottom: 5px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #17434F;
+  opacity: 0.9;
 }
 
-
-/* Ações do Admin */
 .detalheAcoes {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-    border-top: 1px solid #EAEAEA;
-    padding-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  margin-top: auto;
+  /* EMPURRA PARA O FINAL (importante) */
+  border-top: 1px solid #EAEAEA;
+  padding-top: 1.5rem;
 }
 
 .detalheBotao {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.875rem 1.5rem;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Centraliza o texto/ícone */
+  gap: 0.75rem;
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  /* Faz os botões terem larguras iguais */
 }
 
 .detalheBotaoEditar {
-    background: linear-gradient(135deg, #369DA1 0%, #21618D 100%);
-    color: white;
+  background: linear-gradient(135deg, #369DA1 0%, #21618D 100%);
+  color: white;
 }
 
 .detalheBotaoEditar:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(54, 157, 161, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(54, 157, 161, 0.3);
 }
 
 .detalheBotaoDeletar {
-    background: #F498AE;
-    color: white;
+  background: #a1272d;
+  color: white;
 }
 
 .detalheBotaoDeletar:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(244, 152, 174, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(244, 152, 174, 0.3);
 }
 
+/*  MODAL */
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    animation: fadeIn 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.25s ease;
 }
 
+/* -------- MODAL REDUZIDO E MAIS DELICADO -------- */
 .modalConteudo {
-    background: white;
-    border-radius: 24px;
-    padding: 2.5rem;
-    max-width: 500px;
-    width: 90%;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    animation: slideUp 0.3s ease;
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem 1.8rem;
+  max-width: 700px;     /* 🔥 menor */
+  width: 80%;
+  max-height: 80vh;     /* 🔥 menor, mas SEM scroll interno */
+  overflow: visible;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+  animation: slideUp 0.25s ease;
 }
 
+/* animações */
 @keyframes slideUp {
-    from {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* -------- TÍTULOS MAIS SUTIS -------- */
 .modalTitulo {
-    font-size: 1.75rem;
-    font-weight: 800;
-    color: #21618D;
-    margin-bottom: 1rem;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #21618D;
+  margin-top: 0%;   
+  margin-bottom: 0.3rem;
 }
 
 .modalTexto {
-    font-size: 1.125rem;
-    color: #17434F;
-    line-height: 1.6;
-    margin-bottom: 2rem;
+  font-size: 0.95rem;
+  color: #17434F;
+  line-height: 1.45;
+  margin-top: 5px;
+  margin-bottom: 0.3rem;
 }
 
+/* -------- GRID MAIS COMPACTO -------- */
+.modalForm.modalConteudo {
+  max-width: 850px;
+  padding: 1.5rem;
+}
+
+.modalFormGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem 1.2rem;
+  margin-top: 1rem;
+}
+
+.modalInputGridLinha {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.8rem;
+  margin-top: 1rem;
+  margin-bottom: 10px;
+}
+
+/* Colunas mais compactas */
+.modalColuna {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modalColuna.modalColunaDireita {
+  gap: 0.8rem;
+}
+
+/* -------- INPUTS MAIS BAIXOS E COMPACTOS -------- */
+.modalInputGroup label {
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #21618D;
+}
+
+.modalInput,
+.modalTextarea,
+.modalInputGroup select {
+  margin-top: 2px;
+  border: 1.6px solid #D9ECE3;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  width: 100%;
+  height: 38px;      
+}
+
+.modalTextarea {
+  min-height: 145px;
+  height: auto;
+  resize: vertical;
+}
+
+/* foco */
+.modalInput:focus,
+.modalTextarea:focus {
+  outline: none;
+  border-color: #369DA1;
+  box-shadow: 0 0 0 2px rgba(54, 157, 161, 0.12);
+}
+
+/* erro */
+.modalErro {
+  padding: 0.8rem;
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 10px;
+  color: #c33;
+  font-size: 0.85rem;
+  grid-column: 1 / -1;
+  margin-top: 0.8rem;
+}
+
+/* checkboxes */
+.checkboxGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.4rem 0.5rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: #17434F;
+  cursor: pointer;
+}
+
+.checkboxLabel input {
+  width: 1.05em;
+  height: 1.05em;
+  accent-color: #21618D;
+}
+
+/* BOTÕES */
 .modalAcoes {
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-top: 1.2rem;
 }
 
 .modalBotao {
-    padding: 0.875rem 1.75rem;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  padding: 0.7rem 1.4rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .modalBotaoCancelar {
-    background: #D9ECE3;
-    color: #17434F;
+  background: #D9ECE3;
+  color: #17434F;
 }
 
-.modalBotaoCancelar:hover:not(:disabled) {
-    background: #c8dbd2;
-}
+.modalBotaoCancelar:hover { background: #c8dbd2; }
 
 .modalBotaoConfirmar {
-    background: #F498AE;
-    color: white;
+  background: #F498AE;
+  color: white;
 }
 
-.modalBotaoConfirmar:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(244, 152, 174, 0.3);
+.modalBotaoConfirmar:hover {
+  transform: translateY(-2px);
 }
 
-.modalBotao:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+/* confirmar edição azul-verde */
+.modalBotaoConfirmar.confirmarEditar {
+  background: #369DA1;
 }
 
-/* Responsividade (Ajustes de tamanho) */
+/* responsivo */
 @media (max-width: 768px) {
-    .detalheContainer {
-        padding: 1rem;
-    }
+  .modalConteudo {
+    padding: 1.2rem;
+    max-width: 95%;
+  }
 
-    .detalheConteudo {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-        padding: 1.5rem;
-        border-radius: 16px;
-    }
-
-    .detalhePoster {
-        max-width: 300px;
-        margin: 0 auto;
-    }
-
-    .detalheTitulo {
-        font-size: 2rem;
-    }
-
-    .detalheAno,
-    .detalheDuracao {
-        font-size: 1.1rem;
-    }
-
-    .detalheSinopse,
-    .detalheLista {
-        font-size: 0.95rem;
-    }
-
-    .detalheAcoes {
-        flex-direction: column;
-    }
-
-    .detalheBotao {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .modalConteudo {
-        padding: 2rem;
-    }
-
-    .modalAcoes {
-        flex-direction: column;
-    }
-
-    .modalBotao {
-        width: 100%;
-    }
+  .modalFormGrid,
+  .modalInputGridLinha {
+    grid-template-columns: 1fr;
+  }
 }

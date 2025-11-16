@@ -74,6 +74,14 @@ class SimpleAPIHandler(BaseHTTPRequestHandler):
                     send_error_response(self, 400, "ID da solicitação inválido.")
             else:
                 send_error_response(self, 403, "Acesso negado.")
+       
+        elif self.path == '/admin/solicitacoes-edicao':
+            user_data = self._get_user_data_from_token()
+            if user_data and user_data['role'] == 'adm':
+                admin_handler.handle_get_pending_edits(self)
+            else:
+                send_error_response(self, 403, "Acesso negado.")    
+      
         
         elif self.path == '/generos':
             # É uma rota pública, não precisa de token
@@ -108,6 +116,7 @@ class SimpleAPIHandler(BaseHTTPRequestHandler):
     def do_PUT(self):
         # Tenta "casar" com as várias rotas de admin
         match_reject_add = re.match(r'/admin/rejeitar/(\d+)', self.path)
+        match_admin_edit = re.match(r'/admin/filmes/(\d+)', self.path)
         match_approve_add = re.match(r'/admin/aprovar/(\d+)', self.path)
         match_approve_edit = re.match(r'/admin/aprovar-edicao/(\d+)', self.path) 
         match_reject_edit = re.match(r'/admin/rejeitar-edicao/(\d+)', self.path) 
@@ -131,6 +140,14 @@ class SimpleAPIHandler(BaseHTTPRequestHandler):
                 admin_handler.handle_approve_edit(self, solicitacao_id) 
             else:
                 send_error_response(self, 403, "Acesso negado. Rota exclusiva para administradores.")
+            return
+        
+        elif match_admin_edit:
+            filme_id = int(match_admin_edit.group(1))
+            if user_data and user_data['role'] == 'adm':
+                admin_handler.handle_admin_edit_filme(self, filme_id)
+            else:
+                send_error_response(self, 403, "Acesso negado.")
             return
             
         # Rota: [PUT] /admin/rejeitar-edicao/<id> (Rejeitar EDIÇÃO)

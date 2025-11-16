@@ -3,6 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import Navbar from '../../components/Navbar/Navbar';
 import { ArrowLeft } from 'lucide-react';
 import './CadastroFilmes.css';
+import Footer from '../../components/Footer/Footer';
 
 // Lista de linguagens (baseada no seu SQL)
 const linguagensDisponiveis = [
@@ -212,6 +213,7 @@ function CadastroFilmes({ onNavegar }) {
           </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

@@ -5,8 +5,10 @@ from database.db_utils import get_db_connection
 from utils.respostas import send_json_response, send_error_response 
 import mysql.connector
 
-# Só colunas nesta lista podem ser editadas, para evitar SQL Injection
-EDIT_COLUMNS_WHITELIST = ['titulo', 'ano', 'sinopse', 'poster_url', 'duracao', 'id_linguagem']
+EDIT_COLUMNS_WHITELIST = [
+    'titulo', 'ano', 'sinopse', 'poster_url', 'duracao', 'id_linguagem',
+    'generos_texto', 'atores_texto', 'diretores_texto' 
+]
 
 def handle_get_pending_filmes(handler_instance):
     """
@@ -242,11 +244,10 @@ def handle_approve_edit(handler_instance, solicitacao_id):
         send_error_response(handler_instance, 500, "Erro interno do servidor (DB).")
         return
         
-    conn.autocommit = False # Inicia transação
+    conn.autocommit = False 
     cursor = conn.cursor(dictionary=True)
     
     try:
-        # Busca a solicitação de edição pendente
         cursor.execute("SELECT * FROM solicitacoes_edicao WHERE id = %s AND status = 'pendente'", (solicitacao_id,))
         solicitacao = cursor.fetchone()
         
@@ -254,22 +255,29 @@ def handle_approve_edit(handler_instance, solicitacao_id):
             send_error_response(handler_instance, 404, "Solicitação de edição não encontrada ou já processada.")
             return
 
-        # Pega os dados da solicitação
         filme_id = solicitacao['filme_id']
         campo = solicitacao['campo_alterado']
         valor_novo = solicitacao['valor_novo']
-        
-        # Verificação de segurança
-        # Só permite a edição de campos que estão na nossa "lista branca"
+ 
         if campo not in EDIT_COLUMNS_WHITELIST:
-            raise ValueError(f"A edição do campo '{campo}' não é permitida por razões de segurança.")
+            raise ValueError(f"A edição do campo '{campo}' não é permitida.")
         
-        # Constrói e executa a query de atualização de forma segura
-        # (A f-string é segura aqui, pois 'campo' foi validado pela whitelist)
-        query_update = f"UPDATE filmes SET {campo} = %s WHERE id = %s"
-        cursor.execute(query_update, (valor_novo, filme_id))
+        if campo == 'generos_texto':
+            cursor.execute("DELETE FROM filmes_generos WHERE filme_id = %s", (filme_id,))
+            _processar_e_linkar_dados(cursor, filme_id, 'generos', 'filmes_generos', 'genero_id', valor_novo)
         
-        # Atualiza o status da solicitação para 'aprovado'
+        elif campo == 'atores_texto':
+            cursor.execute("DELETE FROM filmes_atores WHERE filme_id = %s", (filme_id,))
+            _processar_e_linkar_dados(cursor, filme_id, 'atores', 'filmes_atores', 'ator_id', valor_novo)
+            
+        elif campo == 'diretores_texto':
+            cursor.execute("DELETE FROM filmes_diretores WHERE filme_id = %s", (filme_id,))
+            _processar_e_linkar_dados(cursor, filme_id, 'diretores', 'filmes_diretores', 'diretor_id', valor_novo)
+        
+        else:
+            query_update = f"UPDATE filmes SET {campo} = %s WHERE id = %s"
+            cursor.execute(query_update, (valor_novo, filme_id))
+        
         cursor.execute("UPDATE solicitacoes_edicao SET status = 'aprovado' WHERE id = %s", (solicitacao_id,))
         
         conn.commit() # Salva as duas alterações
@@ -284,7 +292,6 @@ def handle_approve_edit(handler_instance, solicitacao_id):
             cursor.close()
         if 'conn' in locals() and conn and conn.is_connected():
             conn.close()
-
 
 def handle_reject_edit(handler_instance, solicitacao_id):
     """
@@ -313,6 +320,153 @@ def handle_reject_edit(handler_instance, solicitacao_id):
     except mysql.connector.Error as err:
         conn.rollback()
         send_error_response(handler_instance, 500, f"Erro ao rejeitar edição: {err}")
+    finally:
+        if 'cursor' in locals() and cursor:
+            cursor.close()
+        if 'conn' in locals() and conn and conn.is_connected():
+            conn.close()
+
+def handle_get_pending_edits(handler_instance):
+    """
+    Lida com [GET] /admin/solicitacoes-edicao
+    Busca todas as solicitações de EDIÇÃO com status 'pendente'.
+    """
+    
+    conn = get_db_connection()
+    if not conn:
+        send_error_response(handler_instance, 500, "Erro interno do servidor (DB).")
+        return
+
+    cursor = conn.cursor(dictionary=True)
+    
+    # Busca na tabela 'solicitacoes_edicao' e junta com 'filmes' e 'usuarios'
+    query = """
+        SELECT 
+            s.*, 
+            f.titulo AS filme_titulo, 
+            f.poster_url,
+            u.nome AS usuario_nome
+        FROM solicitacoes_edicao s
+        JOIN filmes f ON s.filme_id = f.id
+        JOIN usuarios u ON s.solicitado_por_id = u.id
+        WHERE s.status = 'pendente'
+        ORDER BY s.data_solicitacao ASC;
+    """
+    
+    try:
+        cursor.execute(query)
+        solicitacoes = cursor.fetchall()
+        send_json_response(handler_instance, 200, solicitacoes)
+        
+    except mysql.connector.Error as err:
+        send_error_response(handler_instance, 500, f"Erro no banco de dados: {err}")
+    finally:
+        if 'cursor' in locals() and cursor:
+            cursor.close()
+        if 'conn' in locals() and conn and conn.is_connected():
+            conn.close()
+
+# ... (Cole isso depois da função handle_reject_edit) ...
+
+def handle_get_pending_edits(handler_instance):
+    """
+    Lida com [GET] /admin/solicitacoes-edicao
+    Busca todas as solicitações de EDIÇÃO com status 'pendente'.
+    """
+    
+    conn = get_db_connection()
+    if not conn:
+        send_error_response(handler_instance, 500, "Erro interno do servidor (DB).")
+        return
+
+    cursor = conn.cursor(dictionary=True)
+    
+    # Busca na tabela 'solicitacoes_edicao' e junta com 'filmes' e 'usuarios'
+    query = """
+        SELECT 
+            s.*, 
+            f.titulo AS filme_titulo, 
+            f.poster_url,
+            u.nome AS usuario_nome
+        FROM solicitacoes_edicao s
+        JOIN filmes f ON s.filme_id = f.id
+        JOIN usuarios u ON s.solicitado_por_id = u.id
+        WHERE s.status = 'pendente'
+        ORDER BY s.data_solicitacao ASC;
+    """
+    
+    try:
+        cursor.execute(query)
+        solicitacoes = cursor.fetchall()
+        send_json_response(handler_instance, 200, solicitacoes)
+        
+    except mysql.connector.Error as err:
+        send_error_response(handler_instance, 500, f"Erro no banco de dados: {err}")
+    finally:
+        if 'cursor' in locals() and cursor:
+            cursor.close()
+        if 'conn' in locals() and conn and conn.is_connected():
+            conn.close()
+
+
+def handle_admin_edit_filme(handler_instance, filme_id):
+    """
+    Lida com [PUT] /admin/filmes/<id>
+    Rota especial para o Admin editar um filme DIRETAMENTE.
+    """
+    
+    body = parse_json_body(handler_instance)
+    if not body:
+        send_error_response(handler_instance, 400, "Corpo da requisição inválido.")
+        return
+
+    conn = get_db_connection()
+    if not conn:
+        send_error_response(handler_instance, 500, "Erro interno do servidor (DB).")
+        return
+        
+    cursor = conn.cursor()
+    
+    try:
+        # Pega os dados do formulário
+        # (Nota: Esta é uma edição SIMPLES. Gêneros e Atores ainda
+        # são tratados como texto aqui, o que é um débito técnico)
+        dados = (
+            body.get('titulo'),
+            body.get('ano'),
+            body.get('duracao'),
+            body.get('poster_url'),
+            body.get('sinopse'),
+            body.get('id_linguagem'),
+            filme_id # Para o "WHERE id = %s"
+        )
+
+        # Atualiza o filme direto na tabela 'filmes'
+        query = """
+            UPDATE filmes SET 
+                titulo = %s, ano = %s, duracao = %s, 
+                poster_url = %s, sinopse = %s, id_linguagem = %s
+            WHERE id = %s
+        """
+        
+        cursor.execute(query, dados)
+        
+        # (Lógica de Gêneros/Atores/Diretores)
+        # Primeiro, limpa as ligações antigas
+        cursor.execute("DELETE FROM filmes_generos WHERE filme_id = %s", (filme_id,))
+        # (Poderíamos limpar atores/diretores também se quiséssemos)
+
+        # Segundo, insere as novas ligações de Gênero
+        generos_texto = body.get('generos_texto')
+        if generos_texto:
+            _processar_e_linkar_dados(cursor, filme_id, 'generos', 'filmes_generos', 'genero_id', generos_texto)
+
+        conn.commit()
+        send_json_response(handler_instance, 200, {"mensagem": "Filme atualizado com sucesso pelo Admin."})
+
+    except mysql.connector.Error as err:
+        conn.rollback() 
+        send_error_response(handler_instance, 500, f"Erro ao atualizar filme: {err}")
     finally:
         if 'cursor' in locals() and cursor:
             cursor.close()
