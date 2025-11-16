@@ -30,7 +30,7 @@ function Home({ onNavegar }) {
         if (!response.ok) throw new Error('Falha ao buscar filmes.');
         const filmesData = await response.json(); // Pega TODOS os filmes
 
-        // Lógica dos Destaques (sem mudança)
+        // Lógica dos Destaques
         const filmesParaDestaque = IDS_DESTAQUE_CARROSSEL
           .map(id => filmesData.find(filme => filme.id === id))
           .filter(Boolean);
@@ -39,7 +39,6 @@ function Home({ onNavegar }) {
         // Lógica dos Recentes (back-end já ordena por ID DESC)
         setFilmesRecentes(filmesData);
 
-        // --- NOVA LÓGICA DO HISTÓRICO ---
         const historicoIds = JSON.parse(localStorage.getItem('historico_filmes')) || [];
         if (historicoIds.length > 0) {
           // Filtra a lista completa de filmes para encontrar os do histórico
@@ -48,7 +47,6 @@ function Home({ onNavegar }) {
             .filter(Boolean); // Remove filmes que possam ter sido deletados
           setFilmesVistos(filmesDoHistorico);
         }
-        // --- FIM DA LÓGICA DO HISTÓRICO ---
 
       } catch (err) {
         setErro(err.message);
@@ -60,7 +58,7 @@ function Home({ onNavegar }) {
   }, [token]);
 
   const handleBuscar = (termo) => {
-    // Ação 3: Manda para a página de Listar Filmes com o termo
+    // Manda para a página de Listar Filmes com o termo
     onNavegar('listar-filmes', { busca: termo });
   };
 
@@ -68,41 +66,38 @@ function Home({ onNavegar }) {
     onNavegar('filme', { id: filmeId });
   };
 
-  if (carregando) { /* ... (tela de loading) ... */ }
-  if (erro) { /* ... (tela de erro) ... */ }
+  if (carregando)
+    if (erro)
 
-  return (
-    <div className="home">
-      {/* Navbar agora usa a nova handleBuscar */}
-      <Navbar onBuscar={handleBuscar} onNavegar={onNavegar} />
+      return (
+        <div className="home">
+          <Navbar onBuscar={handleBuscar} onNavegar={onNavegar} />
 
-      <main className="homeContainer">
+          <main className="homeContainer">
 
-        <Carrossel
-          filmes={filmesDestaque}
-          onFilmeClick={handleVerFilme}
-        />
+            <Carrossel
+              filmes={filmesDestaque}
+              onFilmeClick={handleVerFilme}
+            />
 
-        <FilmeCarrossel
-          titulo="Cadastrados Recentemente"
-          filmes={filmesRecentes}
-          onFilmeClick={handleVerFilme}
-        />
+            <FilmeCarrossel
+              titulo="Cadastrados Recentemente"
+              filmes={filmesRecentes}
+              onFilmeClick={handleVerFilme}
+            />
 
-        {/* --- NOVO CARROSSEL DE HISTÓRICO --- */}
-        {/* Só aparece se o usuário já viu algum filme */}
-        {filmesVistos.length > 0 && (
-          <FilmeCarrossel
-            titulo="Visto Recentemente"
-            filmes={filmesVistos}
-            onFilmeClick={handleVerFilme}
-          />
-        )}
+            {filmesVistos.length > 0 && (
+              <FilmeCarrossel
+                titulo="Visto Recentemente"
+                filmes={filmesVistos}
+                onFilmeClick={handleVerFilme}
+              />
+            )}
 
-      </main>
-      <Footer />
-    </div>
-  );
+          </main>
+          <Footer />
+        </div>
+      );
 }
 
 export default Home;  

@@ -40,10 +40,3 @@
   font-weight: 600;
   color: #21618D;
 }
-
-/* Media Queries */
-@media (max-width: 768px) {
-  .homeContainer {
-    padding: 1rem;
-  }
-}

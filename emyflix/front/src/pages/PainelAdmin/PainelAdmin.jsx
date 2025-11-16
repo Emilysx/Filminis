@@ -11,7 +11,7 @@ function PainelAdmin({ onNavegar }) {
   const [filmesAprovacao, setFilmesAprovacao] = useState([]);
   const [edicoesAprovacao, setEdicoesAprovacao] = useState([]);
   const [carregando, setCarregando] = useState(true);
-  const [processando, setProcessando] = useState(null); // ID do item sendo processado
+  const [processando, setProcessando] = useState(null);
 
   useEffect(() => {
     if (!user || user.role !== 'adm') {
@@ -24,14 +24,11 @@ function PainelAdmin({ onNavegar }) {
   const carregarDados = async () => {
     setCarregando(true);
     try {
-      // Busca Novas Submissões
       const resFilmes = await fetch('http://localhost:8000/admin/solicitacoes', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const dataFilmes = await resFilmes.json();
       if (resFilmes.ok) setFilmesAprovacao(dataFilmes);
-
-      // Busca Edições Pendentes (com poster_url e ano)
       const resEdicoes = await fetch('http://localhost:8000/admin/solicitacoes-edicao', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -53,7 +50,7 @@ function PainelAdmin({ onNavegar }) {
         method: 'PUT', headers: { 'Authorization': `Bearer ${token}` }
       });
       alert('Filme aprovado!');
-      await carregarDados(); 
+      await carregarDados();
     } catch (error) {
       alert('Erro ao aprovar filme');
     } finally {
@@ -96,7 +93,6 @@ function PainelAdmin({ onNavegar }) {
         </button>
         <h1 className="adminTitulo">Painel do Administrador</h1>
 
-        {/* --- Seção de NOVOS Filmes (com Carrossel) --- */}
         <section className="adminSecao">
           <h2 className="adminSecaoTitulo">
             Novos Filmes ({filmesAprovacao.length})
@@ -106,13 +102,12 @@ function PainelAdmin({ onNavegar }) {
           ) : (
             <FilmeCarrossel
               titulo=""
-              filmes={filmesAprovacao} 
+              filmes={filmesAprovacao}
               onFilmeClick={(id) => onNavegar('detalhe-aprovacao', { id })}
             />
           )}
         </section>
 
-        {/* --- Seção de EDIÇÕES Pendentes (com Carrossel) --- */}
         <section className="adminSecao">
           <h2 className="adminSecaoTitulo">
             Edições Pendentes ({edicoesAprovacao.length})
@@ -123,15 +118,14 @@ function PainelAdmin({ onNavegar }) {
             <FilmeCarrossel
               titulo=""
               filmes={edicoesAprovacao.map(solic => ({
-                id: solic.id, 
+                id: solic.id,
                 titulo: solic.filme_titulo,
-                poster_url: solic.poster_url, 
+                poster_url: solic.poster_url,
                 ano: solic.ano,
                 generos: [`Campo: ${solic.campo_alterado}`, `Por: ${solic.usuario_nome}`]
               }))}
-              // --- AQUI ESTÁ A CORREÇÃO ---
+
               onFilmeClick={(id) => {
-                // Encontra a solicitação completa para enviar
                 const solicitacaoCompleta = edicoesAprovacao.find(s => s.id === id);
                 onNavegar('detalhe-edicao', { solicitacao: solicitacaoCompleta });
               }}

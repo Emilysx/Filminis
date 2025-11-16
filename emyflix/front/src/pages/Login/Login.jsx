@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import './Login.css'; // O CSS do "Up" que já fizemos
-
-// Importa os ícones da sua pasta assets
+import './Login.css';
 import googleIcon from '../../assets/google.png';
 import facebookIcon from '../../assets/facebook.png';
 
-function Login({ onNavigate }) { 
+function Login({ onNavigate }) {
   const { signIn } = useAuth();
-  
+
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [erro, setErro] = useState('');
@@ -34,12 +32,12 @@ function Login({ onNavigate }) {
   return (
     <div className="loginContainer">
       <div className="loginCard">
-        
+
         <h2 className="loginTitulo">Seja bem-vindo(a) de volta</h2>
         <p className="loginSubtitulo">Faça seu login para continuar</p>
 
         <form className="loginForm" onSubmit={handleSubmit}>
-          
+
           <div className="inputGroup">
             <label htmlFor="email">Email *</label>
             <input
@@ -87,7 +85,6 @@ function Login({ onNavigate }) {
           </button>
         </div>
 
-        {/* Botão para NAVEGAR para a tela de cadastro */}
         <button className="loginAlternar" onClick={() => onNavigate('cadastro')}>
           Não tem uma conta? <span>Cadastre-se</span>
         </button>

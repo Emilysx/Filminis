@@ -5,7 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import './CadastroFilmes.css';
 import Footer from '../../components/Footer/Footer';
 
-// Lista de linguagens (baseada no seu SQL)
+// Lista de linguagens (baseada no meu SQL)
 const linguagensDisponiveis = [
   { id: 1, nome: 'Português' }, { id: 2, nome: 'Inglês' },
   { id: 3, nome: 'Espanhol' }, { id: 4, nome: 'Francês' },
@@ -16,8 +16,7 @@ const linguagensDisponiveis = [
 
 function CadastroFilmes({ onNavegar }) {
   const { token } = useAuth();
-  
-  // States (lógica não muda)
+
   const [formData, setFormData] = useState({
     titulo: '', ano: '', duracao: '',
     poster_url: '', sinopse: '', id_linguagem: '1',
@@ -28,7 +27,6 @@ function CadastroFilmes({ onNavegar }) {
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState('');
 
-  // useEffect para buscar gêneros (lógica não muda)
   useEffect(() => {
     const fetchGeneros = async () => {
       try {
@@ -47,7 +45,7 @@ function CadastroFilmes({ onNavegar }) {
     };
     fetchGeneros();
   }, [token]);
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -65,13 +63,13 @@ function CadastroFilmes({ onNavegar }) {
     const nomesGeneros = Object.keys(generosSelecionados).filter(
       nome => generosSelecionados[nome]
     );
-    
+
     if (nomesGeneros.length === 0) {
       setErro("Por favor, selecione pelo menos um gênero.");
       setCarregando(false);
       return;
     }
-    
+
     const generos_texto_final = nomesGeneros.join(', ');
     const dadosCompletos = { ...formData, generos_texto: generos_texto_final };
 
@@ -87,7 +85,7 @@ function CadastroFilmes({ onNavegar }) {
       const data = await response.json();
       if (!response.ok) throw new Error(data.erro);
       alert('Filme enviado para aprovação!');
-      onNavegar('home'); 
+      onNavegar('home');
     } catch (err) {
       setErro(err.message);
     } finally {
@@ -96,10 +94,10 @@ function CadastroFilmes({ onNavegar }) {
   };
 
   return (
-    <div className="formularioFilme"> 
+    <div className="formularioFilme">
       <Navbar onNavegar={onNavegar} />
       <div className="formularioContainer">
-        
+
         <button className="formularioBotaoVoltar" onClick={() => onNavegar('home')}>
           <ArrowLeft size={20} />
           <span>Voltar</span>
@@ -112,15 +110,15 @@ function CadastroFilmes({ onNavegar }) {
           </p>
 
           <form className="formularioForm" onSubmit={handleSubmit}>
-            
-            {/* === INÍCIO DA ESTRUTURA DE 2 COLUNAS === */}
+
+            {/* 2 Colunas */}
             <div className="formLayoutGrid">
-              
-              {/* --- COLUNA DA ESQUERDA --- */}
+
+              {/* Coluna esquerda */}
               <div className="colunaEsquerda">
                 <div className="inputGroup">
                   <label htmlFor="titulo">Título *</label>
-                  <input id="titulo" name="titulo" type="text"  placeholder="Ex: Enrolados"
+                  <input id="titulo" name="titulo" type="text" placeholder="Ex: Enrolados"
                     value={formData.titulo} onChange={handleChange} required
                   />
                 </div>
@@ -140,7 +138,7 @@ function CadastroFilmes({ onNavegar }) {
                     />
                   </div>
                 </div>
-                
+
                 <div className="inputGroup">
                   <label htmlFor="id_linguagem">Linguagem *</label>
                   <select id="id_linguagem" name="id_linguagem"
@@ -151,7 +149,7 @@ function CadastroFilmes({ onNavegar }) {
                     ))}
                   </select>
                 </div>
-                
+
                 <div className="inputGroup">
                   <label htmlFor="poster_url">URL do Pôster *</label>
                   <input id="poster_url" name="poster_url" type="text" placeholder="Ex: https://linkdaimagem"
@@ -168,7 +166,7 @@ function CadastroFilmes({ onNavegar }) {
 
               </div>
 
-              {/* --- COLUNA DA DIREITA --- */}
+              {/* Coluna direita */}
               <div className="colunaDireita">
 
                 <div className="inputGroup">
@@ -184,13 +182,13 @@ function CadastroFilmes({ onNavegar }) {
                     value={formData.sinopse} onChange={handleChange} required
                   />
                 </div>
-                
+
                 <div className="inputGroup">
                   <label>Gêneros *</label>
                   <div className="checkboxGrid">
                     {generosDisponiveis.map((genero) => (
                       <label key={genero.id} className="checkboxLabel">
-                        <input 
+                        <input
                           type="checkbox"
                           name={genero.nome}
                           checked={generosSelecionados[genero.nome] || false}
@@ -209,7 +207,7 @@ function CadastroFilmes({ onNavegar }) {
             <button type="submit" className="formularioBotaoSubmit" disabled={carregando}>
               {carregando ? 'Enviando...' : 'Enviar para Aprovação'}
             </button>
-            
+
           </form>
         </div>
       </div>

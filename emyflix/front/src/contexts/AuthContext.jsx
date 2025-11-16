@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { jwtDecode } from 'jwt-decode'; // (Verifique se instalou: npm install jwt-decode)
+import { jwtDecode } from 'jwt-decode'; // (Verifique se está instalado: npm install jwt-decode)
 
 // A URL do seu back-end em Python
 const API_URL = 'http://localhost:8000';
@@ -7,7 +7,7 @@ const API_URL = 'http://localhost:8000';
 const AuthContext = createContext(undefined);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null); // O usuário (ex: {nome: "Emily", role: "adm"})
+  const [user, setUser] = useState(null); 
   const [token, setToken] = useState(() => localStorage.getItem('token')); // O "crachá"
   const [loading, setLoading] = useState(true);
 
@@ -57,7 +57,6 @@ export function AuthProvider({ children }) {
     const response = await fetch(`${API_URL}/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      // (Corrigido para 'senha', como fizemos antes)
       body: JSON.stringify({ email: email, senha: password, nome: nome, role: 'comum' }),
     });
 

@@ -1,4 +1,3 @@
-/* --- NOVO CSS (Compacto e 2 Colunas) --- */
 .formularioFilme {
   min-height: 100vh;
   background-color: #D9ECE3;
@@ -21,13 +20,13 @@
   font-size: 2.25rem;
   font-weight: 800;
   color: #21618D;
-  margin-bottom: 1.5rem; 
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
 .formularioSubtitulo {
   text-align: center;
-  margin-top: -1.5rem; 
+  margin-top: -1.5rem;
   margin-bottom: 1.5rem;
   font-size: 0.9rem;
   color: #555;
@@ -183,7 +182,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Responsividade */
 @media (max-width: 900px) {
   .formLayoutGrid {
     grid-template-columns: 1fr;
@@ -199,7 +197,7 @@
     margin-bottom: 1.5rem;
   }
 
-  .checkboxGrid { 
+  .checkboxGrid {
     grid-template-columns: 1fr 1fr;
   }
 }

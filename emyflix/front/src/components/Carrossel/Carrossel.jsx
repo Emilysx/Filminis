@@ -8,7 +8,7 @@ function Carrossel({ filmes, onFilmeClick }) {
 
   const bannerSlide = {
     id: 'banner-01',
-    isBanner: true // Usamos isso para saber o que renderizar
+    isBanner: true
   };
 
   const slides = [bannerSlide, ...filmes];

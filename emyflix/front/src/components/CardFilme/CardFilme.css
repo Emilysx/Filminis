@@ -99,7 +99,6 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: auto;
-  /* Empurra as categorias para o fundo do card */
 }
 
 .cardFilmeCategoria {

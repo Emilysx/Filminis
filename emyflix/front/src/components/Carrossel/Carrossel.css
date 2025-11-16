@@ -32,7 +32,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Faz o banner cobrir o espaço */
   animation: fadeIn 0.5s ease-in-out;
 }
 
@@ -117,7 +116,6 @@
   line-height: 1.6;
   margin-bottom: 1.5rem;
   opacity: 0.95;
-  /* Limita a sinopse a 2 linhas */
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -203,7 +201,6 @@
   border-radius: 6px;
 }
 
-/* Media queries para telas menores */
 @media (max-width: 768px) {
   .carrosselContainer {
     height: 400px;
@@ -227,7 +224,6 @@
   .carrosselSinopse {
     font-size: 0.9rem;
     -webkit-line-clamp: 2;
-    /* Mantém 2 linhas */
   }
 
   .carrosselBotao {

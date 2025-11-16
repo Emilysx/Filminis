@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Check, X } from 'lucide-react'; // Ícones de Aprovar/Rejeitar
+import { ArrowLeft, Check, X } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import Navbar from '../../components/Navbar/Navbar';
-// Vamos reutilizar o CSS da página de Detalhes
 import '../../pages/DetalheFilme/DetalheFilme.css'; 
 
 function DetalheAprovacao({ solicitacaoId, onNavegar }) {
@@ -31,7 +30,6 @@ function DetalheAprovacao({ solicitacaoId, onNavegar }) {
       }
     };
     
-    // Se não for admin, chuta pra home
     if (!user || user.role !== 'adm') {
       onNavegar('home');
       return;
@@ -67,7 +65,7 @@ function DetalheAprovacao({ solicitacaoId, onNavegar }) {
       });
       if (!response.ok) throw new Error('Erro ao rejeitar filme');
       alert('Solicitação rejeitada com sucesso.');
-      onNavegar('admin'); // Volta para o Painel Admin
+      onNavegar('admin');
     } catch (error) {
       alert(error.message);
       setProcessando(false);
@@ -75,11 +73,10 @@ function DetalheAprovacao({ solicitacaoId, onNavegar }) {
   };
 
 
-  if (carregando) { /* ... (tela de loading) ... */ }
-  if (erro) { /* ... (tela de erro) ... */ }
+  if (carregando) 
+  if (erro) 
   if (!filme) return null;
 
-  // --- Renderização da Página (igual ao DetalheFilme) ---
   return (
     <div className="detalhe">
       <Navbar onNavegar={onNavegar} />
@@ -119,7 +116,7 @@ function DetalheAprovacao({ solicitacaoId, onNavegar }) {
             </div>
             
             <div className="detalheGridInfo"> 
-              {/* Coluna da ESQUERDA */}
+              {/* Coluna da esquerda */}
               <div className="detalheColunaInfo">
                 <div className="detalheSecao">
                   <h2 className="detalheSecaoTitulo">Personagens</h2>
@@ -131,7 +128,7 @@ function DetalheAprovacao({ solicitacaoId, onNavegar }) {
                 </div>
               </div>
 
-              {/* Coluna da DIREITA */}
+              {/* Coluna da direita */}
               <div className="detalheColunaInfo">
                 <div className="detalheSecao">
                   <h2 className="detalheSecaoTitulo">Linguagem</h2>
@@ -144,7 +141,7 @@ function DetalheAprovacao({ solicitacaoId, onNavegar }) {
               </div>
             </div>
 
-            {/* === BOTÕES DE APROVAÇÃO === */}
+            {/* Botões de aprovações*/}
             <div className="detalheAcoes">
               <button
                 className="detalheBotao detalheBotaoDeletar" // Reutiliza o CSS

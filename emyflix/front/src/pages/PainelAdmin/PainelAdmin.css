@@ -169,6 +169,7 @@
   background: #237f42;
   color: white;
 }
+
 .adminBotaoAprovar:hover:not(:disabled) {
   background: #5ea574;
   transform: translateY(-2px);
@@ -178,6 +179,7 @@
   background: #a1272d;
   color: white;
 }
+
 .adminBotaoRejeitar:hover:not(:disabled) {
   background: #f17a95;
   transform: translateY(-2px);
@@ -187,6 +189,3 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
-
-/* (O resto do seu CSS original para 'solicitacoes'
-   pode ficar aqui, mas não vamos usá-lo por enquanto) */

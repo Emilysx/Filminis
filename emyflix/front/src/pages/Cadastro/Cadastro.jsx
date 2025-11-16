@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import './Cadastro.css';
 
-function Cadastro({ onNavigate }) { 
-  const { signUp } = useAuth(); // Pega só a função de registro
-  
+function Cadastro({ onNavigate }) {
+  const { signUp } = useAuth();
+
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const [confirmaSenha, setConfirmaSenha] = useState(''); // Campo novo
-  
+  const [confirmaSenha, setConfirmaSenha] = useState('');
+
   const [erro, setErro] = useState('');
   const [carregando, setCarregando] = useState(false);
 
@@ -27,10 +27,10 @@ function Cadastro({ onNavigate }) {
     try {
       // Chama o back-end (só com os campos que ele espera)
       await signUp(email, senha, nome);
-      
+
       alert('Conta criada com sucesso! Faça login para continuar.');
-      onNavigate('login'); // Pede ao App.jsx para voltar à tela de login
-      
+      onNavigate('login');
+
     } catch (error) {
       // Se o back-end der erro (ex: email já existe)
       setErro(error.message || 'Erro ao registrar');
@@ -42,13 +42,13 @@ function Cadastro({ onNavigate }) {
   return (
     <div className="cadastroContainer">
       <div className="cadastroCard">
-        
+
         <h2 className="cadastroTitulo">Cadastro</h2>
         <p className="cadastroSubtitulo">Faça seu cadastro para continuar</p>
 
         <form className="cadastroForm" onSubmit={handleSubmit}>
           <div className="formGrid">
-            
+
             <div className="inputGroup">
               <label htmlFor="nome">Nome Completo *</label>
               <input
@@ -72,7 +72,7 @@ function Cadastro({ onNavigate }) {
                 required
               />
             </div>
-            
+
             <div className="inputGroup">
               <label htmlFor="senha">Senha *</label>
               <input
@@ -96,7 +96,7 @@ function Cadastro({ onNavigate }) {
                 required
               />
             </div>
-            
+
           </div>
 
           {erro && <div className="cadastroErro">{erro}</div>}
@@ -104,7 +104,7 @@ function Cadastro({ onNavigate }) {
           <button type="submit" className="cadastroBotao" disabled={carregando}>
             {carregando ? 'Aguarde...' : 'Cadastrar'}
           </button>
-            
+
         </form>
 
         <button className="cadastroAlternar" onClick={() => onNavigate('login')}>

@@ -1,14 +1,13 @@
 import React from 'react';
 import './Footer.css';
 import logoEmyflix from '../../assets/logo.png';
-import { Facebook, Instagram, Twitter, Youtube } from 'lucide-react'; // Ícones para redes sociais
+import { Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
 
 function Footer() {
   return (
     <footer className="footer">
-      <div className="footerContentWrapper"> {/* Novo container para o conteúdo principal */}
+      <div className="footerContentWrapper">
 
-        {/* Coluna 1: Logo e Descrição */}
         <div className="footerSection footerAbout">
           <div className="footerLogo">
             <img src={logoEmyflix} alt="EmyFlix Logo" className="footerLogoImg" />
@@ -61,7 +60,7 @@ function Footer() {
           <a href="#" className="footerLink">Privacidade</a>
         </div>
 
-      </div> {/* Fim do footerContentWrapper */}
+      </div>
 
       {/* Seção de Copyright e Políticas (Fica abaixo das colunas) */}
       <div className="footerBottom">

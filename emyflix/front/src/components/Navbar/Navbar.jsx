@@ -1,5 +1,4 @@
 import { useState } from 'react';
-// 1. IMPORTA O ÍCONE 'Home'
 import { Search, User, LogOut, Plus, Settings, Home } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import './Navbar.css';
@@ -104,11 +103,9 @@ function Navbar({ onBuscar, onNavegar }) {
               <div className="navbarMenu">
 
                 <div className="navbarMenuHeader">
-                  {/* 1. O ÍCONE DO USUÁRIO (dentro do menu) */}
                   <div className="navbarMenuAvatar">
                     <User size={20} />
                   </div>
-                  {/* 2. O NOME E O PAPEL */}
                   <div className="navbarMenuInfo">
                     <p className="navbarMenuNome">{user?.nome}</p>
                     {user?.role && (

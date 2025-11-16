@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ArrowLeft, Edit, Trash2 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import Navbar from '../../components/Navbar/Navbar';
-import './DetalheFilme.css'; 
+import './DetalheFilme.css';
 import Footer from '../../components/Footer/Footer';
 
 // --- LISTAS (para preencher o formulário) 
@@ -26,25 +26,25 @@ const adicionarAoHistorico = (filmeId) => {
 
 function DetalheFilme({ filmeId, onNavegar }) {
   const { user, token } = useAuth();
-  
+
   const [filme, setFilme] = useState(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
-  
+
   const [mostrarModalDelete, setMostrarModalDelete] = useState(false);
   const [deletando, setDeletando] = useState(false);
 
   const [mostrarModalEdicao, setMostrarModalEdicao] = useState(false);
   const [editCarregando, setEditCarregando] = useState(false);
   const [editErro, setEditErro] = useState('');
-  
+
   const [editFormData, setEditFormData] = useState({
     titulo: '', ano: '', duracao: '', poster_url: '', sinopse: '',
     id_linguagem: '1', diretores_texto: '', atores_texto: ''
   });
   const [generosDisponiveis, setGenerosDisponiveis] = useState([]);
   const [generosSelecionados, setGenerosSelecionados] = useState({});
-  
+
   // Efeito que busca os dados do filme
   useEffect(() => {
     const carregarFilme = async () => {
@@ -73,7 +73,7 @@ function DetalheFilme({ filmeId, onNavegar }) {
           diretores_texto: data.diretores.join(', '),
           atores_texto: data.atores.join(', ')
         });
-        
+
       } catch (err) {
         setErro(err.message);
       } finally {
@@ -82,7 +82,7 @@ function DetalheFilme({ filmeId, onNavegar }) {
     };
     carregarFilme();
   }, [filmeId, token]);
-  
+
   // Efeito para carregar os Gêneros (para o modal)
   useEffect(() => {
     if (mostrarModalEdicao && generosDisponiveis.length === 0) {
@@ -94,13 +94,13 @@ function DetalheFilme({ filmeId, onNavegar }) {
           if (!response.ok) throw new Error('Falha ao buscar gêneros');
           const data = await response.json();
           setGenerosDisponiveis(data);
-          
+
           const estadoInicial = {};
           data.forEach(genero => {
             estadoInicial[genero.nome] = filme.generos.includes(genero.nome);
           });
           setGenerosSelecionados(estadoInicial);
-          
+
         } catch (err) {
           setEditErro('Erro ao carregar gêneros: ' + err.message);
         }
@@ -108,7 +108,7 @@ function DetalheFilme({ filmeId, onNavegar }) {
       fetchGeneros();
     }
   }, [mostrarModalEdicao, token, generosDisponiveis.length, filme]);
-  
+
   // Função para Deletar (SÓ ADMIN)
   const handleDeletar = async () => {
     if (!filme || user.role !== 'adm') return;
@@ -120,7 +120,7 @@ function DetalheFilme({ filmeId, onNavegar }) {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.erro || 'Erro ao deletar');
-      
+
       alert('Filme deletado com sucesso!');
       onNavegar('home');
     } catch (error) {
@@ -156,14 +156,14 @@ function DetalheFilme({ filmeId, onNavegar }) {
       return;
     }
     const generos_texto_final = nomesGeneros.join(', ');
-    
+
     // Junta os dados completos
     const dadosCompletos = {
       ...editFormData,
       generos_texto: generos_texto_final
     };
 
-   
+
     let url = '';
     let alertMessage = '';
 
@@ -176,9 +176,9 @@ function DetalheFilme({ filmeId, onNavegar }) {
       url = `http://localhost:8000/filmes/${filme.id}`;
       alertMessage = 'Sua solicitação de edição foi enviada para aprovação!';
     }
-  
+
     try {
-      const response = await fetch(url, { // <-- Usa a URL dinâmica
+      const response = await fetch(url, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -189,11 +189,11 @@ function DetalheFilme({ filmeId, onNavegar }) {
 
       const data = await response.json();
       if (!response.ok) throw new Error(data.erro || 'Erro ao enviar edição');
-      
-      alert(alertMessage); // <-- Usa a mensagem dinâmica
+
+      alert(alertMessage);
       setMostrarModalEdicao(false);
-      window.location.reload(); 
-      
+      window.location.reload();
+
     } catch (err) {
       setEditErro(err.message);
     } finally {
@@ -224,11 +224,10 @@ function DetalheFilme({ filmeId, onNavegar }) {
 
   if (!filme) return null;
 
-  // --- Renderização da Página Principal ---
   return (
     <div className="detalhe">
       <Navbar onNavegar={onNavegar} />
-      
+
       <div className="detalheContainer">
         <button className="detalheBotaoVoltar" onClick={() => onNavegar('home')}>
           <ArrowLeft size={20} />
@@ -245,10 +244,10 @@ function DetalheFilme({ filmeId, onNavegar }) {
               </div>
             )}
           </div>
-          
+
           <div className="detalheInfo">
             <h1 className="detalheTitulo">{filme.titulo}</h1>
-            
+
             <div className="detalheMetadata">
               <span className="detalheAno">{filme.ano}</span>
               <span className="detalheDuracao">{filme.duracao}</span>
@@ -263,12 +262,12 @@ function DetalheFilme({ filmeId, onNavegar }) {
               <h2 className="detalheSecaoTitulo">Sinopse</h2>
               <p className="detalheSinopse">{filme.sinopse}</p>
             </div>
-            
+
             <div className="detalheSecao">
               <h2 className="detalheSecaoTitulo">Personagens Principais</h2>
               <p className="detalheLista">{filme.atores.join(', ')}</p>
             </div>
-            
+
             <div className="detalheGridInfo">
               <div className="detalheColunaInfo">
                 <div className="detalheSecao">
@@ -292,7 +291,7 @@ function DetalheFilme({ filmeId, onNavegar }) {
                 <Edit size={18} />
                 <span>Sugerir Edição</span>
               </button>
-              
+
               {user?.role === 'adm' && (
                 <button
                   className="detalheBotao detalheBotaoDeletar"
@@ -346,15 +345,15 @@ function DetalheFilme({ filmeId, onNavegar }) {
               Suas alterações serão enviadas para um administrador aprovar.
             </p>
 
-            {/* --- Linha 1: Título --- */}
+            {/*  Título */}
             <div className="modalInputGroup">
               <label htmlFor="titulo">Título</label>
               <input id="titulo" name="titulo" type="text" className="modalInput"
                 value={editFormData.titulo} onChange={handleEditFormChange}
               />
             </div>
-            
-            {/* --- Linha 2: Ano, Duração, Linguagem (Sua sugestão) --- */}
+
+            {/* Ano, Duração, Linguagem */}
             <div className="modalInputGridLinha">
               <div className="modalInputGroup">
                 <label htmlFor="ano">Ano</label>
@@ -379,8 +378,8 @@ function DetalheFilme({ filmeId, onNavegar }) {
                 </select>
               </div>
             </div>
-            
-            {/* --- Linha 3: URL do Pôster --- */}
+
+            {/* URL do Pôster */}
             <div className="modalInputGroup">
               <label htmlFor="poster_url">URL do Pôster</label>
               <input id="poster_url" name="poster_url" type="text" className="modalInput"
@@ -388,7 +387,7 @@ function DetalheFilme({ filmeId, onNavegar }) {
               />
             </div>
 
-            {/* --- Linha 4: Personagens e Direção (Sua sugestão) --- */}
+            {/* Personagens e Direção  */}
             <div className="modalFormGrid">
               <div className="modalInputGroup">
                 <label htmlFor="atores_texto">Personagens (separados por vírgula)</label>
@@ -404,7 +403,7 @@ function DetalheFilme({ filmeId, onNavegar }) {
               </div>
             </div>
 
-            {/* --- Linha 5: Sinopse e Gêneros (Sua sugestão) --- */}
+            {/* Sinopse e Gêneros */}
             <div className="modalFormGrid">
               <div className="modalInputGroup modalInputGroupStretched">
                 <label htmlFor="sinopse">Sinopse</label>
@@ -417,7 +416,7 @@ function DetalheFilme({ filmeId, onNavegar }) {
                 <div className="checkboxGrid">
                   {generosDisponiveis.map((genero) => (
                     <label key={genero.id} className="checkboxLabel">
-                      <input 
+                      <input
                         type="checkbox"
                         name={genero.nome}
                         checked={generosSelecionados[genero.nome] || false}
@@ -429,9 +428,8 @@ function DetalheFilme({ filmeId, onNavegar }) {
                 </div>
               </div>
             </div>
-            {/* --- FIM DO LAYOUT --- */}
 
-            
+
             {editErro && <div className="modalErro">{editErro}</div>}
 
             <div className="modalAcoes">

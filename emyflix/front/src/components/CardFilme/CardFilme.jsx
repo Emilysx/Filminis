@@ -26,7 +26,6 @@ function CardFilme({ filme, onClick }) {
                 {genero}
               </span>
             ))}
-            {/* Se tiver mais de 2, mostra "+X" */}
             {filme.generos.length > 2 && (
               <span className="cardFilmeCategoria">+{filme.generos.length - 2}</span>
             )}

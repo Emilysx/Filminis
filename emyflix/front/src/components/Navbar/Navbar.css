@@ -240,7 +240,6 @@
   background: #D9ECE3;
 }
 
-/* RESPONSIVIDADE */
 @media (max-width: 900px) {
   .navbarBotaoTexto {
     display: none;

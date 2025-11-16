@@ -44,8 +44,8 @@
     border-radius: 12px;
     font-size: 1rem;
     background: #f9f9f9;
-    height: 3.3rem; /* Altura fixa para alinhar tudo */
-    padding-left: 3rem; /* espaço para o ícone */
+    height: 3.3rem;
+    padding-left: 3rem;
 }
 
 .filtroIconeBusca {
@@ -57,7 +57,6 @@
     pointer-events: none;
 }
 
-/* --- Inputs e Selects Gerais --- */
 .filtrosPainel select,
 .filtrosPainel input[type="number"] {
     height: 3.3rem;
@@ -99,8 +98,6 @@
     box-shadow: 0 4px 12px rgba(54, 157, 161, 0.3);
 }
 
-
-/* -- RESTANTE DO SEU CSS -- */
 .listarResultadoHeader {
     display: flex;
     justify-content: space-between;

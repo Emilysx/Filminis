@@ -16,19 +16,15 @@ function ListarFilmes({ onNavegar, params = {} }) {
     const [anoFiltro, setAnoFiltro] = useState('');
 
     // Estados de Dados
-    const [filmesAgrupados, setFilmesAgrupados] = useState({}); // Para o "Modo Explorar"
+    const [filmesAgrupados, setFilmesAgrupados] = useState({}); 
     const [generos, setGeneros] = useState([]);
-    const [resultadosFiltrados, setResultadosFiltrados] = useState([]); // Para o "Modo Busca"
+    const [resultadosFiltrados, setResultadosFiltrados] = useState([]);
 
     // Estados de Controle
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState('');
-    // Decide qual modo mostrar: 'explorar' (padrão) ou 'busca'
     const [modo, setModo] = useState(params.busca ? 'busca' : 'explorar');
 
-    // --- EFEITOS ---
-
-    // 1. Busca os dados da página (Gêneros e TODOS os filmes)
     useEffect(() => {
         const carregarDadosIniciais = async () => {
             setCarregando(true);
@@ -46,7 +42,7 @@ function ListarFilmes({ onNavegar, params = {} }) {
                 });
                 const filmesData = await resFilmes.json();
 
-                // Agrupa os filmes por gênero (para o modo 'explorar')
+                // Agrupa os filmes por gênero
                 const filmesAgrupados = {};
                 for (const genero of generosData) {
                     filmesAgrupados[genero.nome] = filmesData.filter(filme =>
@@ -65,7 +61,7 @@ function ListarFilmes({ onNavegar, params = {} }) {
         carregarDadosIniciais();
     }, [token]);
 
-    // 2. Efeito que RODA A BUSCA toda vez que um filtro (Gênero/Ano) muda
+    // Efeito que RODA A BUSCA toda vez que um filtro (Gênero/Ano) muda
     useEffect(() => {
         if (!termoBusca && !generoFiltro && !anoFiltro) {
             setModo('explorar');
@@ -76,16 +72,13 @@ function ListarFilmes({ onNavegar, params = {} }) {
         buscarFilmesFiltrados();
 
     }, [generoFiltro, anoFiltro, token]);
-
-    // --- FUNÇÕES ---
-
-    // Função que realmente busca os dados filtrados no back-end
+    
     const buscarFilmesFiltrados = async () => {
         setCarregando(true);
         setErro('');
         try {
             const query = new URLSearchParams();
-            if (termoBusca) query.append('q', termoBusca); // 'q' = busca geral
+            if (termoBusca) query.append('q', termoBusca); 
             if (generoFiltro) query.append('genero', generoFiltro);
             if (anoFiltro) query.append('ano', anoFiltro);
 
@@ -131,8 +124,6 @@ function ListarFilmes({ onNavegar, params = {} }) {
                 </button>
 
                 <h1 className="listarTitulo">Explore o Catálogo</h1>
-
-                {/* --- PAINEL DE FILTROS (SEMPRE APARECE) --- */}
                 <form className="filtrosPainel">
                     <div className="filtroInputBusca">
                         <Search size={20} className="filtroIconeBusca" />
@@ -166,7 +157,6 @@ function ListarFilmes({ onNavegar, params = {} }) {
                     </div>
                 </form>
 
-                {/* --- ÁREA DE CONTEÚDO (GRID ou CARROSSÉIS) --- */}
                 {carregando ? (
                     <div className="listarCarregando">
                         <div className="listarSpinner" />
@@ -174,9 +164,7 @@ function ListarFilmes({ onNavegar, params = {} }) {
                 ) : erro ? (
                     <div className="listarErro">{erro}</div>
                 ) : (
-                    // Decide qual modo mostrar
                     modo === 'busca' ? (
-                        // --- MODO BUSCA (Grid) ---
                         <section className="listarResultados">
                             <div className="listarResultadoHeader">
                                 <h2>Resultados da Busca ({resultadosFiltrados.length})</h2>
@@ -199,7 +187,7 @@ function ListarFilmes({ onNavegar, params = {} }) {
                             )}
                         </section>
                     ) : (
-                        // --- MODO EXPLORAR (Carrosséis) ---
+
                         <div className="listarCarrosseis">
                             {generos.map(genero => {
                                 if (filmesAgrupados[genero.nome]?.length > 0) {

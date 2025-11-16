@@ -17,7 +17,7 @@ function FilmeCarrossel({ titulo, filmes, onFilmeClick }) {
 
   const handleScrollRight = () => {
     let newScrollX = scrollX - Math.round(window.innerWidth / 2);
-    
+
     const maxScroll = (filmes.length * LARGURA_ITEM) - window.innerWidth + 48; // +48px de padding
     if (Math.abs(newScrollX) > maxScroll) {
       newScrollX = -maxScroll;
@@ -28,7 +28,7 @@ function FilmeCarrossel({ titulo, filmes, onFilmeClick }) {
   return (
     <section className="filmeCarrossel">
       <h2 className="filmeCarrosselTitulo">{titulo}</h2>
-      
+
       {/* Seta da Esquerda */}
       <div className="filmeCarrosselSeta setaEsquerda" onClick={handleScrollLeft}>
         <ChevronLeft size={40} />
@@ -39,11 +39,11 @@ function FilmeCarrossel({ titulo, filmes, onFilmeClick }) {
       </div>
 
       <div className="filmeCarrosselListaArea">
-        <div 
-          className="filmeCarrosselLista" 
-          style={{ 
-            marginLeft: scrollX, 
-            width: filmes.length * LARGURA_ITEM 
+        <div
+          className="filmeCarrosselLista"
+          style={{
+            marginLeft: scrollX,
+            width: filmes.length * LARGURA_ITEM
           }}
         >
           {filmes.map((filme) => (
