@@ -14,7 +14,7 @@ function Home({ onNavegar }) {
 
   const [filmesRecentes, setFilmesRecentes] = useState([]);
   const [filmesDestaque, setFilmesDestaque] = useState([]);
-  const [filmesVistos, setFilmesVistos] = useState([]); // <-- NOVO ESTADO
+  const [filmesVistos, setFilmesVistos] = useState([]);
 
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
@@ -66,38 +66,43 @@ function Home({ onNavegar }) {
     onNavegar('filme', { id: filmeId });
   };
 
-  if (carregando)
-    if (erro)
+  if (erro) {
+    return (
+      <div className="homeErro">
+        <p>{erro}</p>
+      </div>
+    );
+  }
 
-      return (
-        <div className="home">
-          <Navbar onBuscar={handleBuscar} onNavegar={onNavegar} />
+  return (
+    <div className="home">
+      <Navbar onBuscar={handleBuscar} onNavegar={onNavegar} />
 
-          <main className="homeContainer">
+      <main className="homeContainer">
 
-            <Carrossel
-              filmes={filmesDestaque}
-              onFilmeClick={handleVerFilme}
-            />
+        <Carrossel
+          filmes={filmesDestaque}
+          onFilmeClick={handleVerFilme}
+        />
 
-            <FilmeCarrossel
-              titulo="Cadastrados Recentemente"
-              filmes={filmesRecentes}
-              onFilmeClick={handleVerFilme}
-            />
+        <FilmeCarrossel
+          titulo="Cadastrados Recentemente"
+          filmes={filmesRecentes}
+          onFilmeClick={handleVerFilme}
+        />
 
-            {filmesVistos.length > 0 && (
-              <FilmeCarrossel
-                titulo="Visto Recentemente"
-                filmes={filmesVistos}
-                onFilmeClick={handleVerFilme}
-              />
-            )}
+        {filmesVistos.length > 0 && (
+          <FilmeCarrossel
+            titulo="Visto Recentemente"
+            filmes={filmesVistos}
+            onFilmeClick={handleVerFilme}
+          />
+        )}
 
-          </main>
-          <Footer />
-        </div>
-      );
+      </main>
+      <Footer />
+    </div>
+  );
 }
 
 export default Home;  

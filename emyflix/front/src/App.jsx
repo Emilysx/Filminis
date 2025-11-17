@@ -85,12 +85,11 @@ function AppContent() {
   // Rota de Listar Filmes (Filtros)
   if (rota === 'listar-filmes') {
     return <ListarFilmes onNavegar={navegar} params={params} />;
-  }
+}
 
   // Rota Padrão (Home)
   return <Home onNavegar={navegar} />;
 }
-
 
 function App() {
   return (

@@ -16,12 +16,11 @@ def check_password(password, hashed):
     # Recebe a senha que o usuário digitou (ex: "123456") e a senha criptografada do banco (ex: "$2b$..."). Retorna True ou False.
     return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
 
-def create_token(user_id, user_role, user_nome): # <-- 1. Adiciona user_nome aqui
-    #Cria um "crachá" (Token JWT) para o usuário. O crachá contém o ID, o "papel" e o NOME do usuário.
+def create_token(user_id, user_role, user_nome):
     payload = {
         'user_id': user_id,
         'role': user_role,
-        'nome': user_nome,
+        'nome': user_nome, 
         'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
     }
     token = jwt.encode(payload, JWT_SECRET, algorithm="HS256")

@@ -1,6 +1,5 @@
 # Este é o arquivo é o que liga o back-end.
 from http.server import HTTPServer, BaseHTTPRequestHandler
-import json
 import re
 from handlers import auth_handler
 from handlers import filmes_handler
@@ -9,194 +8,199 @@ from utils.auth_seguranca import verify_token
 from utils.respostas import send_json_response, send_error_response
 
 class SimpleAPIHandler(BaseHTTPRequestHandler):
+    
+    # CORS 
     def _send_cors_headers(self):
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-        self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization') 
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
 
     def do_OPTIONS(self):
         self.send_response(204)
         self._send_cors_headers()
         self.end_headers()
 
+    # TOKEN / AUTENTICAÇÃO 
     def _get_user_data_from_token(self):
         auth_header = self.headers.get('Authorization')
         if not auth_header:
             return None
         try:
-            # Espera "Bearer <token>"
             token_type, token = auth_header.split(' ')
             if token_type.lower() != 'bearer':
                 return None
-            
             return verify_token(token)
-        except Exception as e:
-            print(f"Erro ao validar token: {e}")
+        except:
             return None
 
-    # Roteador GET
+    # GET 
     def do_GET(self):
-        
-        # Rota: /filmes/buscar?...
-        if self.path.startswith('/filmes/buscar'):
-            filmes_handler.handle_search_filmes(self) 
-            
-        # Rota: /filmes/1 (ou qualquer número)
-        elif re.match(r'/filmes/(\d+)', self.path):
-            try:
-                filme_id = int(re.match(r'/filmes/(\d+)', self.path).group(1))
-                filmes_handler.handle_get_filme_by_id(self, filme_id) 
-            except ValueError:
-                send_error_response(self, 400, "ID do filme inválido.")
 
-        # Rota: /filmes (Listar todos)
-        elif self.path == '/filmes':
-            # CHAMA O GERENTE: filmes_handler
-            filmes_handler.handle_get_all_filmes(self) 
-            
-        # Rota: /admin/solicitacoes (Rota de Admin)
-        elif self.path == '/admin/solicitacoes':
-            user_data = self._get_user_data_from_token() # Pega o "crachá"
-            # Verifica se o crachá existe e se o "papel" é 'adm'
-            if user_data and user_data['role'] == 'adm':
-                # CHAMA O GERENTE: admin_handler
-                admin_handler.handle_get_pending_filmes(self) 
-            else:
-                send_error_response(self, 403, "Acesso negado. Rota exclusiva para administradores.")
+        # /filmes/buscar?... (filtros)
+        if self.path.startswith('/filmes/buscar'):
+            filmes_handler.handle_search_filmes(self)
+            return
         
-        elif re.match(r'/admin/solicitacao/(\d+)', self.path):
+        # /filmes/<id>
+        match_filme_id = re.match(r'/filmes/(\d+)', self.path)
+        if match_filme_id:
+            filme_id = int(match_filme_id.group(1))
+            filmes_handler.handle_get_filme_by_id(self, filme_id)
+            return
+
+        # /filmes (listar todos)
+        if self.path == '/filmes':
+            filmes_handler.handle_get_all_filmes(self)
+            return
+        
+        # /admin/solicitacoes (adição)
+        if self.path == '/admin/solicitacoes':
             user_data = self._get_user_data_from_token()
             if user_data and user_data['role'] == 'adm':
-                try:
-                    solicitacao_id = int(re.match(r'/admin/solicitacao/(\d+)', self.path).group(1))
-                    admin_handler.handle_get_solicitacao_by_id(self, solicitacao_id)
-                except ValueError:
-                    send_error_response(self, 400, "ID da solicitação inválido.")
+                admin_handler.handle_get_pending_filmes(self)
             else:
                 send_error_response(self, 403, "Acesso negado.")
-       
-        elif self.path == '/admin/solicitacoes-edicao':
+            return
+        
+        # /admin/solicitacao/<id>
+        match_solicitacao = re.match(r'/admin/solicitacao/(\d+)', self.path)
+        if match_solicitacao:
+            solicitacao_id = int(match_solicitacao.group(1))
+            user_data = self._get_user_data_from_token()
+
+            if user_data and user_data['role'] == 'adm':
+                admin_handler.handle_get_solicitacao_by_id(self, solicitacao_id)
+            else:
+                send_error_response(self, 403, "Acesso negado.")
+            return
+        
+        # /admin/solicitacoes-edicao
+        if self.path == '/admin/solicitacoes-edicao':
             user_data = self._get_user_data_from_token()
             if user_data and user_data['role'] == 'adm':
                 admin_handler.handle_get_pending_edits(self)
             else:
-                send_error_response(self, 403, "Acesso negado.")    
-      
+                send_error_response(self, 403, "Acesso negado.")
+            return
         
-        elif self.path == '/generos':
-            # É uma rota pública, não precisa de token
+        # /generos
+        if self.path == '/generos':
             filmes_handler.handle_get_all_generos(self)
-            
-        else:
-            send_error_response(self, 404, "Rota não encontrada.")
+            return
+        
+        send_error_response(self, 404, "Rota não encontrada.")
 
-    # Roteador POST
+    # POST 
     def do_POST(self):
-        if self.path == '/login':
-            # CHAMA O GERENTE: auth_handler
-            auth_handler.handle_login(self)
 
-        elif self.path == '/register':
-            # CHAMA O GERENTE: auth_handler
+        if self.path == '/login':
+            auth_handler.handle_login(self)
+            return
+
+        if self.path == '/register':
             auth_handler.handle_register(self)
+            return
+
+        if self.path == '/filmes':
+            user_data = self._get_user_data_from_token()
+            if not user_data:
+                send_error_response(self, 401, "Token inválido.")
+                return
+            filmes_handler.handle_create_filme(self, user_data)
+            return
         
-        # Rota: /filmes (Adicionar filme)
-        elif self.path == '/filmes':
-            user_data = self._get_user_data_from_token() # Pega o "crachá"
-            if user_data: # Só precisa estar logado (qualquer usuário)
-                # CHAMA O GERENTE: filmes_handler
-                filmes_handler.handle_create_filme(self, user_data) 
-            else:
-                send_error_response(self, 401, "Não autorizado. Token inválido ou ausente.")
-        
-        else:
-            send_error_response(self, 404, "Rota não encontrada.")
-            
-    # Roteador PUT (para aprovações e edições)
+        send_error_response(self, 404, "Rota não encontrada.")
+
+    # PUT 
     def do_PUT(self):
-        # Tenta "casar" com as várias rotas de admin
+
+        user_data = self._get_user_data_from_token()
+
         match_reject_add = re.match(r'/admin/rejeitar/(\d+)', self.path)
         match_admin_edit = re.match(r'/admin/filmes/(\d+)', self.path)
         match_approve_add = re.match(r'/admin/aprovar/(\d+)', self.path)
-        match_approve_edit = re.match(r'/admin/aprovar-edicao/(\d+)', self.path) 
-        match_reject_edit = re.match(r'/admin/rejeitar-edicao/(\d+)', self.path) 
-        match_edit_filme = re.match(r'/filmes/(\d+)', self.path) # Submeter edição
+        match_approve_edit = re.match(r'/admin/aprovar-edicao/(\d+)', self.path)
+        match_reject_edit = re.match(r'/admin/rejeitar-edicao/(\d+)', self.path)
+        match_edit_filme = re.match(r'/filmes/(\d+)', self.path)
 
-        user_data = self._get_user_data_from_token() # Pega o "crachá"
-
-        # Rota: [PUT] /admin/aprovar/<id> (Aprovar ADIÇÃO)
-        if match_approve_add:
-            solicitacao_id = int(match_approve_add.group(1)) 
-            if user_data and user_data['role'] == 'adm': # Precisa ser ADM
-                admin_handler.handle_approve_filme(self, solicitacao_id) 
+        # Rejeitar ADIÇÃO
+        if match_reject_add:
+            solicitacao_id = int(match_reject_add.group(1))
+            if user_data and user_data['role'] == 'adm':
+                admin_handler.handle_reject_submission(self, solicitacao_id)
             else:
-                send_error_response(self, 403, "Acesso negado. Rota exclusiva para administradores.")
-            return
-
-        # Rota: [PUT] /admin/aprovar-edicao/<id> (Aprovar EDIÇÃO)
-        elif match_approve_edit:
-            solicitacao_id = int(match_approve_edit.group(1))
-            if user_data and user_data['role'] == 'adm': # Precisa ser ADM
-                admin_handler.handle_approve_edit(self, solicitacao_id) 
-            else:
-                send_error_response(self, 403, "Acesso negado. Rota exclusiva para administradores.")
+                send_error_response(self, 403, "Acesso negado.")
             return
         
-        elif match_admin_edit:
+        # Aprovar ADIÇÃO
+        if match_approve_add:
+            solicitacao_id = int(match_approve_add.group(1))
+            if user_data and user_data['role'] == 'adm':
+                admin_handler.handle_approve_filme(self, solicitacao_id)
+            else:
+                send_error_response(self, 403, "Acesso negado.")
+            return
+
+        # Aprovar EDIÇÃO
+        if match_approve_edit:
+            solicitacao_id = int(match_approve_edit.group(1))
+            if user_data and user_data['role'] == 'adm':
+                admin_handler.handle_approve_edit(self, solicitacao_id)
+            else:
+                send_error_response(self, 403, "Acesso negado.")
+            return
+        
+        # Rejeitar EDIÇÃO
+        if match_reject_edit:
+            solicitacao_id = int(match_reject_edit.group(1))
+            if user_data and user_data['role'] == 'adm':
+                admin_handler.handle_reject_edit(self, solicitacao_id)
+            else:
+                send_error_response(self, 403, "Acesso negado.")
+            return
+
+        # Edição direta do ADM
+        if match_admin_edit:
             filme_id = int(match_admin_edit.group(1))
             if user_data and user_data['role'] == 'adm':
                 admin_handler.handle_admin_edit_filme(self, filme_id)
             else:
                 send_error_response(self, 403, "Acesso negado.")
             return
-            
-        # Rota: [PUT] /admin/rejeitar-edicao/<id> (Rejeitar EDIÇÃO)
-        elif match_reject_edit:
-            solicitacao_id = int(match_reject_edit.group(1))
-            if user_data and user_data['role'] == 'adm': # Precisa ser ADM
-                admin_handler.handle_reject_edit(self, solicitacao_id) 
-            else:
-                send_error_response(self, 403, "Acesso negado. Rota exclusiva para administradores.")
-            return
 
-        # Rota: [PUT] /filmes/<id> (Submeter Edição de filme)
-        elif match_edit_filme:
+        # Solicitar edição de filme
+        if match_edit_filme:
             filme_id = int(match_edit_filme.group(1))
-            if user_data: # Só precisa estar logado
-                filmes_handler.handle_edit_filme(self, filme_id, user_data) 
-            else:
-                send_error_response(self, 401, "Não autorizado. Token inválido ou ausente.")
+            if not user_data:
+                send_error_response(self, 401, "Token inválido.")
+                return
+            filmes_handler.handle_edit_filme(self, filme_id, user_data)
             return
-            
-        else:
-            send_error_response(self, 404, "Rota não encontrada.")
-    
-    # Roteador DELETE
+        
+        send_error_response(self, 404, "Rota não encontrada.")
+
+    # DELETE 
     def do_DELETE(self):
         match = re.match(r'/filmes/(\d+)', self.path)
         if match:
+            filme_id = int(match.group(1))
             user_data = self._get_user_data_from_token()
-            if user_data and user_data['role'] == 'adm': # Precisa ser ADM
-                try:
-                    filme_id = int(match.group(1))
-                    admin_handler.handle_delete_filme(self, filme_id) 
-                except ValueError:
-                    send_error_response(self, 400, "ID do filme inválido.")
+
+            if user_data and user_data['role'] == 'adm':
+                admin_handler.handle_delete_filme(self, filme_id)
             else:
-                send_error_response(self, 403, "Acesso negado. Rota exclusiva para administradores.")
+                send_error_response(self, 403, "Acesso negado.")
             return
 
-        else:
-            send_error_response(self, 404, "Rota não encontrada.")
-            
-# Função para Iniciar o Servido
+        send_error_response(self, 404, "Rota não encontrada.")
+
+# RUN SERVER
 def run(server_class=HTTPServer, handler_class=SimpleAPIHandler, port=8000):
-    """ Configura e inicia o servidor HTTP. """
-    server_address = ('', port) 
+    server_address = ('', port)
     httpd = server_class(server_address, handler_class)
     print(f"🎀  - Iniciando API em http://localhost:{port}/ ...")
     try:
-        httpd.serve_forever() # Deixa o servidor rodando
+        httpd.serve_forever()
     except KeyboardInterrupt:
         print("\nServidor interrompido. Desligando...")
         httpd.server_close()

@@ -14,10 +14,14 @@ def send_response_base(handler_instance, status_code, content_type='text/plain')
     handler_instance.end_headers()
 
 def send_error_response(handler_instance, status_code, message):
-    # Envia uma resposta de erro padronizada em JSON.
     send_response_base(handler_instance, status_code, 'application/json')
     error_payload = {"erro": message}
-    handler_instance.wfile.write(json.dumps(error_payload).encode('utf-8'))
+    
+    try:
+        handler_instance.wfile.write(json.dumps(error_payload).encode('utf-8'))
+    except ConnectionAbortedError:
+        pass
+
 
 def parse_json_body(handler_instance):
     # Lê o "corpo" (body) de uma requisição (ex: dados de login) e converte o JSON para um dicionário Python.
@@ -39,9 +43,11 @@ class CustomJSONEncoder(json.JSONEncoder):
         return super().default(obj)
 
 def send_json_response(handler_instance, status_code, payload):
-    # Envia uma resposta de sucesso padronizada em JSON.
     send_response_base(handler_instance, status_code, 'application/json')
     
-    # Usa nossa classe especial para converter datas
-    json_bytes = json.dumps(payload, cls=CustomJSONEncoder).encode('utf-8')
-    handler_instance.wfile.write(json_bytes)
+    try:
+        json_bytes = json.dumps(payload, cls=CustomJSONEncoder).encode('utf-8')
+        handler_instance.wfile.write(json_bytes)
+    except ConnectionAbortedError:
+        # Navegador cancelou a conexão antes da resposta
+        pass

@@ -6,14 +6,12 @@ import '../../pages/DetalheFilme/DetalheFilme.css';
 
 function DetalheAprovacao({ solicitacaoId, onNavegar }) {
   const { user, token } = useAuth();
-  
-  const [filme, setFilme] = useState(null); // 'filme' aqui é a solicitação
+  const [filme, setFilme] = useState(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
-  const [processando, setProcessando] = useState(false); // Para os botões
+  const [processando, setProcessando] = useState(false);
 
   useEffect(() => {
-    // Busca os dados da SOLICITAÇÃO (não do filme aprovado)
     const carregarSolicitacao = async () => {
       setCarregando(true);
       try {
@@ -34,8 +32,22 @@ function DetalheAprovacao({ solicitacaoId, onNavegar }) {
       onNavegar('home');
       return;
     }
+
     carregarSolicitacao();
   }, [solicitacaoId, token, user, onNavegar]);
+
+  // === VALIDAÇÕES CORRETAS ===
+  if (carregando) {
+    return <div className="detalheCarregando">Carregando...</div>;
+  }
+
+  if (erro) {
+    return <div className="detalheErro">{erro}</div>;
+  }
+
+  if (!filme) {
+    return <div className="detalheErro">Solicitação não encontrada.</div>;
+  }
 
   // Função para APROVAR
   const handleAprovar = async () => {
@@ -47,7 +59,7 @@ function DetalheAprovacao({ solicitacaoId, onNavegar }) {
       });
       if (!response.ok) throw new Error('Erro ao aprovar filme');
       alert('Filme aprovado e publicado com sucesso!');
-      onNavegar('admin'); // Volta para o Painel Admin
+      onNavegar('admin');
     } catch (error) {
       alert(error.message);
       setProcessando(false);
@@ -73,10 +85,6 @@ function DetalheAprovacao({ solicitacaoId, onNavegar }) {
   };
 
 
-  if (carregando) 
-  if (erro) 
-  if (!filme) return null;
-
   return (
     <div className="detalhe">
       <Navbar onNavegar={onNavegar} />
@@ -88,20 +96,17 @@ function DetalheAprovacao({ solicitacaoId, onNavegar }) {
         </button>
 
         <div className="detalheConteudo">
-          {/* Coluna da Esquerda (Poster) */}
           <div className="detalhePoster">
             <img src={filme.poster_url} alt={filme.titulo} />
           </div>
 
-          {/* Coluna da Direita (Informações) */}
           <div className="detalheInfo">
             <h1 className="detalheTitulo">{filme.titulo}</h1>
-            
+
             <div className="detalheMetadata">
               <span className="detalheAno">{filme.ano}</span>
               <span className="detalheDuracao">{filme.duracao}</span>
               <div className="detalheCategorias">
-                {/* Mostra o TEXTO que o usuário enviou */}
                 {filme.generos_texto.split(',').map((genero) => (
                   <span key={genero} className="detalheCategoria">
                     {genero.trim()}
@@ -116,7 +121,6 @@ function DetalheAprovacao({ solicitacaoId, onNavegar }) {
             </div>
             
             <div className="detalheGridInfo"> 
-              {/* Coluna da esquerda */}
               <div className="detalheColunaInfo">
                 <div className="detalheSecao">
                   <h2 className="detalheSecaoTitulo">Personagens</h2>
@@ -128,7 +132,6 @@ function DetalheAprovacao({ solicitacaoId, onNavegar }) {
                 </div>
               </div>
 
-              {/* Coluna da direita */}
               <div className="detalheColunaInfo">
                 <div className="detalheSecao">
                   <h2 className="detalheSecaoTitulo">Linguagem</h2>
@@ -141,18 +144,18 @@ function DetalheAprovacao({ solicitacaoId, onNavegar }) {
               </div>
             </div>
 
-            {/* Botões de aprovações*/}
             <div className="detalheAcoes">
               <button
-                className="detalheBotao detalheBotaoDeletar" // Reutiliza o CSS
+                className="detalheBotao detalheBotaoDeletar"
                 onClick={handleRejeitar}
                 disabled={processando}
               >
                 <X size={18} />
                 <span>Rejeitar</span>
               </button>
+
               <button
-                className="detalheBotao detalheBotaoAprovar" // Reutiliza o CSS 'detalheBotao'
+                className="detalheBotao detalheBotaoAprovar"
                 onClick={handleAprovar}
                 disabled={processando}
               >
@@ -160,6 +163,7 @@ function DetalheAprovacao({ solicitacaoId, onNavegar }) {
                 <span>Aprovar Filme</span>
               </button>
             </div>
+
           </div>
         </div>
       </div>
