@@ -2,7 +2,7 @@
 
 import json
 from database.db_utils import get_db_connection
-from utils.respostas import send_json_response, send_error_response 
+from utils.respostas import parse_json_body, send_json_response, send_error_response
 import mysql.connector
 
 EDIT_COLUMNS_WHITELIST = [
@@ -425,7 +425,7 @@ def handle_admin_edit_filme(handler_instance, filme_id):
         send_error_response(handler_instance, 500, "Erro interno do servidor (DB).")
         return
         
-    cursor = conn.cursor()
+    cursor = conn.cursor(dictionary=True)
     
     try:
         # Pega os dados do formulário
